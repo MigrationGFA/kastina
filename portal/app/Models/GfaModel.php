@@ -456,7 +456,7 @@ public function getCertificateEmailSoft($email){
 public function getCertificateEmailCourseWemaEkiti($email){
          $builder = $this->db->table('certificate');
        $builder->where('email',$email);
-       $builder->where('cert_type',"ekiti-wema-course");
+       $builder->where('cert_type',"katsina-wema-course");
        $builder->where('name !=',"");
        $query = $builder->get(); 
        if($query->getNumRows() > 0 )
