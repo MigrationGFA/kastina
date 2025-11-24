@@ -4080,26 +4080,110 @@ echo 'All fields are required, please fill all fields';
 	}
 
 
-	public function users_analytics()
+	public function access_dashboard()
 
-	{
-		
+    {
+        
         $email  = session()->get('email') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
-		$title['page_title'] = "Analytics Startups Activities ";
-		$data['email'] =  $email;
+        $title['page_title'] = "Analytics Startups Activities ";
+        $data['email'] =  $email;
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = $account_type = session()->get('account_type') ;
-		echo view('corperate/header_new',$title);
+        echo view('corperate/header_new',$title);
+        
+        //echo view('corperate/nav_new',$data);
+        echo view('corperate/menu_new',$data);
+        echo view('corperate/access_dashboard');
+        echo view('corperate/footer_new');
+
+        
+
+    }
+
+    public function started_learning()
+
+    {
+        
+        $email  = session()->get('email') ;
+        if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
+        $title['page_title'] = "Analytics Startups Activities ";
+        $data['email'] =  $email;
+        $data['login_type'] = session()->get('login_type') ;
+        $data['account_type'] = $account_type = session()->get('account_type') ;
+        echo view('corperate/header_new',$title);
         
         echo view('corperate/nav_new',$data);
-        echo view('corperate/menu_new',$title);
-		echo view('corperate/users_analytics');
-		echo view('corperate/footer_new');
+        echo view('corperate/menu_new',$data);
+        echo view('corperate/started_learning');
+        echo view('corperate/footer_new');
 
-		
+        
 
-	}
+    }
+    
+    public function completed_at_least_a_course()
+
+    {
+        
+        $email  = session()->get('email') ;
+        if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
+        $title['page_title'] = "Analytics Startups Activities ";
+        $data['email'] =  $email;
+        $data['login_type'] = session()->get('login_type') ;
+        $data['account_type'] = $account_type = session()->get('account_type') ;
+        echo view('corperate/header_new',$title);
+        
+        echo view('corperate/nav_new',$data);
+        echo view('corperate/menu_new',$data);
+        echo view('corperate/completed_at_least_a_course');
+        echo view('corperate/footer_new');
+
+        
+
+    }
+
+public function completed_assigned_course()
+
+    {
+        
+        $email  = session()->get('email') ;
+        if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
+        $title['page_title'] = "Analytics Startups Activities ";
+        $data['email'] =  $email;
+        $data['login_type'] = session()->get('login_type') ;
+        $data['account_type'] = $account_type = session()->get('account_type') ;
+        echo view('corperate/header_new',$title);
+        
+        echo view('corperate/nav_new',$data);
+        echo view('corperate/menu_new',$data);
+        echo view('corperate/completed_assigned_course');
+        echo view('corperate/footer_new');
+
+        
+
+    }
+    public function users_analytics($batch="")
+
+    {
+        
+        $email  = session()->get('email') ;
+        if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
+        $title['page_title'] = "Analytics Startups Activities ";
+        $data['email'] =  $email;
+        $data['login_type'] = session()->get('login_type') ;
+        $data['account_type'] = $account_type = session()->get('account_type') ;
+        $data['batch'] = $batch;
+        echo view('corperate/header_new',$title);
+        
+        echo view('corperate/nav_new',$data);
+        echo view('corperate/menu_new',$data);
+        echo view('corperate/users_analytics',$data);
+        echo view('corperate/footer_new',$data);
+
+        
+
+    }
 
 	
 	 public function analytics()
