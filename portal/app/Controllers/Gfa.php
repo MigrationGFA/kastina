@@ -7884,7 +7884,7 @@ public function index_admin() {
 
         
         
-        $data['page_title'] = "Wema Smedan Upskilling Programme";
+        $data['page_title'] = "Wema katsina Upskilling Programme";
         $data['sliders'] = $this->gfa_model->getAllSlider();
 
  

@@ -1,0 +1,7 @@
+CRITICAL - 2025-11-24 17:58:24 --> Call to undefined method App\Models\GfaModel::getAllSlider
+in SYSTEMPATH\Model.php on line 842.
+ 1 APPPATH\Controllers\Gfa.php(7888): CodeIgniter\Model->__call('getAllSlider', [])
+ 2 SYSTEMPATH\CodeIgniter.php(934): App\Controllers\Gfa->index_admin()
+ 3 SYSTEMPATH\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Gfa))
+ 4 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(70): CodeIgniter\CodeIgniter->run()

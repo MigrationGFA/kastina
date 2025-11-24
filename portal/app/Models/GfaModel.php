@@ -651,6 +651,22 @@ if ($query) {
 
 }
 
+public function getAllSlider()
+{           
+        $builder = $this->db->table('manage_slider');
+        $builder->orderBy('id', "desc");
+        $query = $builder->get(); 
+        if($query->getNumRows() > 0 )
+        {
+            return $query->getResultArray();
+        }
+        else
+        {
+            return 0;
+        }
+            
+}
+
 
 
 public function  GetUserProgressNewCurriculum($userEmail){
