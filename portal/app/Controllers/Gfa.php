@@ -6694,6 +6694,218 @@ $email  = session()->get('email'); if(($email == '')){ return redirect()->to(bas
     echo "Cohort Info updated";
 }
 
+public function export_access_dashboard()
+{
+  
+
+    
+                    $filename   =  date("Y-m-d",time()); 
+                    $filename  = rand(1,100)."_".$filename.'_'."access_dashboard";
+                     
+                header("Content-Type: text/csv");
+                header("Content-Disposition: attachment; filename={$filename}.csv");
+
+                // Create a file pointer for output
+                $output = fopen("php://output", "w");
+
+                // Define the CSV header row
+                $csvHeader = array(
+                    "S/No",
+                    "Name",
+                    "Course"
+                    
+                    
+                    
+                    
+                );
+
+                // Write the CSV header
+                fputcsv($output, $csvHeader);
+                        $n =1 ;
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiLoggedIn('Katsina Wema');
+                        foreach ($rowArray as $row) {
+                       
+                            $csvRow = array(
+                                $n++,
+                                $row['last_name']." ".$row['first_name'],
+                                $row['course_type']
+                                
+                                
+                               
+                                
+                                
+                            );
+
+                            fputcsv($output, $csvRow);
+        }
+   
+
+    // Close the output file pointer
+    fclose($output);
+
+    exit();
+   
+    
+}
+
+
+public function export_started_learnining()
+{
+  
+
+    
+                    $filename   =  date("Y-m-d",time()); 
+                    $filename  = rand(1,100)."_".$filename.'_'."started_learnining";
+                     
+                header("Content-Type: text/csv");
+                header("Content-Disposition: attachment; filename={$filename}.csv");
+
+                // Create a file pointer for output
+                $output = fopen("php://output", "w");
+
+                // Define the CSV header row
+                $csvHeader = array(
+                    "S/No",
+                    "Email",
+                    
+                    
+                    
+                    
+                );
+
+                // Write the CSV header
+                fputcsv($output, $csvHeader);
+                        $n =1 ;
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiStartedLearning('Katsina Wema');
+                        foreach ($rowArray as $row) {
+                       
+                            $csvRow = array(
+                                $n++,
+                                $row['user_email']
+                                
+                                
+                               
+                                
+                                
+                            );
+
+                            fputcsv($output, $csvRow);
+        }
+   
+
+    // Close the output file pointer
+    fclose($output);
+
+    exit();
+   
+    
+}
+
+public function export_completed_at_least_a_course()
+{
+  
+
+    
+                    $filename   =  date("Y-m-d",time()); 
+                    $filename  = rand(1,100)."_".$filename.'_'."completed_at_least_a_course";
+                     
+                header("Content-Type: text/csv");
+                header("Content-Disposition: attachment; filename={$filename}.csv");
+
+                // Create a file pointer for output
+                $output = fopen("php://output", "w");
+
+                // Define the CSV header row
+                $csvHeader = array(
+                    "S/No",
+                    "Email",
+                    
+                    
+                    
+                    
+                );
+
+                // Write the CSV header
+                fputcsv($output, $csvHeader);
+                        $n =1 ;
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiCompletedAtLeastACourse('Katsina Wema');
+                        foreach ($rowArray as $row) {
+                       
+                            $csvRow = array(
+                                $n++,
+                                $row['user_email']
+                                
+                                
+                               
+                                
+                                
+                            );
+
+                            fputcsv($output, $csvRow);
+        }
+   
+
+    // Close the output file pointer
+    fclose($output);
+
+    exit();
+   
+    
+}
+
+public function export_completed_assigned_course()
+{
+  
+
+    
+                    $filename   =  date("Y-m-d",time()); 
+                    $filename  = rand(1,100)."_".$filename.'_'."export_completed_assigned_course";
+                     
+                header("Content-Type: text/csv");
+                header("Content-Disposition: attachment; filename={$filename}.csv");
+
+                // Create a file pointer for output
+                $output = fopen("php://output", "w");
+
+                // Define the CSV header row
+                $csvHeader = array(
+                    "S/No",
+                    "Email",
+                    
+                    
+                    
+                    
+                );
+
+                // Write the CSV header
+                fputcsv($output, $csvHeader);
+                        $n =1 ;
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiCompletedCoursePassedQuiz('Katsina Wema');
+                        foreach ($rowArray as $row) {
+                       
+                            $csvRow = array(
+                                $n++,
+                                $row['user_email']
+                                
+                                
+                               
+                                
+                                
+                            );
+
+                            fputcsv($output, $csvRow);
+        }
+   
+
+    // Close the output file pointer
+    fclose($output);
+
+    exit();
+   
+    
+}
+
+
 public function export_reg_state()
 {
   
@@ -7868,12 +8080,12 @@ $getCertificateSoft = $this->gfa_model->getCertificateEmailSoft($email);
                 $response_data['page_title'] = "User Login | GetFunded Africa";
 
         
+                //echo view('login', $response_data);
+
+
+                echo view('header_home',$response_data);
                 echo view('login', $response_data);
-
-
-                // echo view('header_home',$title);
-                // echo view('login', $response_data);
-                // echo view('header_footer');
+                echo view('header_footer');
 
             }
 
