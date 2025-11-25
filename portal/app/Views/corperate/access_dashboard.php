@@ -32,7 +32,7 @@
         <?php         
                  
                 
-           $row  = $this->gfa_model->ExportWemaEkitiLoggedIn('KATSINA ALAT');
+           $row  = $this->gfa_model->ExportWemaEkitiLoggedIn('Katsina Wema');
                    
            
            
