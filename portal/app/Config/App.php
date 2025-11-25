@@ -29,8 +29,10 @@ class App extends BaseConfig
      */
     // @var bool
     // public $displayErrorDetails = false;
-    // public string $baseURL = 'https://katsina-learning.remsana.com/portal/';
-    public string $baseURL = 'https://katsina-learning.remsana.com/portal/';
+
+    // public string $baseURL = 'https://katsina-learning.remsana.com/portal/'; 
+    public string $baseURL = 'https://katsina-learning.remsana.com/portal/'; //http://localhost/katsina/portal/
+
     // public string $baseURL = 'https://kaduna-digital.dimpified.com/portal/';
 
     /**

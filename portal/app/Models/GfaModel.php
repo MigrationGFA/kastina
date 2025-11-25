@@ -22,92 +22,120 @@ class GfaModel extends Model
         return $dowMap[$day];
     }
 
-    //katsina
+    //KATSINA
+
+    public function GetCertificateEligibleNewCurriculumWema($email) {
+
+        $query = $this->db->query("CALL GetCertificateEligibleNewCurriculumWema(?)", [$email]);
+        
+        return $query->getResultArray(); 
+   
+   }
+
+    public function GetEachUserCourseListWema($email) {
+
+        $query = $this->db->query("CALL GetEachUserCourseListWema(?)", [$email]);
+        
+        return $query->getResultArray(); 
+   
+   }
+
+    public function GetCertificateEligibleAssignedCourseWema($email) {
+
+    $query = $this->db->query("CALL GetCertificateEligibleAssignedCourseWema(?)", [$email]);
+   
+   return $query->getResultArray(); 
+   
+   }
 
     public function checkWemaUser($email)
-{
-    $builder = $this->db->table('wema_course_access');
-    $builder->where('email', $email);
-    $existingUser = $builder->get()->getRowArray();
+    {
+        $builder = $this->db->table('wema_course_access');
+        $builder->where('email', $email);
+        $existingUser = $builder->get()->getRowArray();
 
-    return $existingUser;  
+        return $existingUser;  
+    }
+
+    public function getCertificateWemaCourse($email){
+            $builder = $this->db->table('certificate');
+        $builder->where('email',$email);
+        $builder->where('cert_type',"katsina-course");
+        $query = $builder->get(); 
+        if($query->getNumRows() > 0 )
+        {
+            return $query->getResultArray();
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public function updateIsOline($email, $data)
+{
+    $this->db->table('startups_inv')
+             ->where('Contact_Email', $email)
+             ->update($data);
+
+    return $this->db->affectedRows();
 }
 
-public function getCertificateUidCourse($email){
-         $builder = $this->db->table('certificate');
-       $builder->where('email',$email);
-       $builder->where('cert_type',"katsina-course");
-       $query = $builder->get(); 
-       if($query->getNumRows() > 0 )
-       {
-           return $query->getResultArray();
-       }
-       else
-       {
-           return 0;
-       }
-}
-    public function saveWemaCourse($email, $data)
-{
-    $this->db->table('wema_course_access')
-        ->where('email', $email)
-        ->update($data);
 
-    if ($this->db->affectedRows() > 0) {
-        return $this->db->affectedRows();
+    public function ExportWemaEkitiCompletedCoursePassedQuiz($program_type){
+
+    $query = $this->db->query("CALL ExportWemaEkitiCompletedCoursePassedQuiz(?)", [$program_type]);
+   
+   return $query->getResultArray(); 
+   }
+   public function ExportWemaEkitiCompletedAtLeastACourse($program_type) {
+
+    $query = $this->db->query("CALL ExportWemaEkitiCompletedAtLeastACourse(?)", [$program_type]);
+   
+   return $query->getResultArray(); 
+   
+   }
+   public function ExportWemaEkitiStartedLearning($program_type) {
+
+    $query = $this->db->query("CALL ExportWemaEkitiStartedLearning(?)", [$program_type]);
+   
+   return $query->getResultArray(); 
+   
+   }
+   public function ExportWemaEkitiLoggedIn($program_type) {
+
+    $query = $this->db->query("CALL ExportWemaEkitiLoggedIn(?)", [$program_type]);
+   
+   return $query->getResultArray(); 
+   
+   }
+
+    public function WemaEkitiAnalytics($program_type) {
+
+    $query = $this->db->query("CALL WemaEkitiAnalytics(?)", [$program_type]);
+   
+   return $query->getResultArray(); 
+   
+   }
+
+    public function regAllBatch()
+{
+     $builder = $this->db->table('reg_batch');
+    $query = $builder->get();
+
+    $query = $builder->get();
+
+    if ($query->getNumRows() > 0) {
+        return $query->getResultArray();
     } else {
         return 0;
     }
 }
 
-    public function getWemaCategoryDetails($email)
-{           
-    $builder = $this->db->table('wema_course_access');
-    $builder->select('course_type');
-    $builder->where('email', $email);
-    $query = $builder->get(); 
-    
-    if ($query->getNumRows() > 0) 
-    {
-        return $query->getResultArray()[0]['course_type'];
-    } 
-	else 
-	{
-        return 0;
-    }
-}
 
-    public function GetRegisteredWemaCourse($email) {
-
-    $query = $this->db->query("CALL GetRegisteredWemaCourse(?)", [$email]);
-    return $query->getResultArray()[0]['course']; 
-   
-}
-
-    public function getStartUpByUid($email)
-{
-    $builder = $this->db->table('wema_course_access');
-    $builder->select('*');
-    $builder->where('email', $email);
-    $builder->orderBy('email', 'DESC');
-    $builder->limit(1);
-
-    $query = $builder->get();
-
-    return $query->getNumRows() > 0
-        ? $query->getRowArray()
-        : [];
-}
-
-    public function CheckMissingFieldsByWemaUid($email){
-$query = $this->db->query("CALL CheckMissingFieldsByWemaUid(?)", [$email]);
-   
-   return $query->getResultArray();
-}
-
-    public function wema_course_access($data)
+    public function insertParticipantsProfile($data)
 {       
-    $query = $this->db->table('wema_course_access')->insert($data);
+    $query = $this->db->table('user_ext_info')->insert($data);
     
     if ($query)
     {
@@ -118,6 +146,226 @@ $query = $this->db->query("CALL CheckMissingFieldsByWemaUid(?)", [$email]);
         return 0;
     }
 }
+
+    public function getAllSlider()
+{           
+        $builder = $this->db->table('manage_slider');
+        $builder->orderBy('id', "desc");
+        $query = $builder->get(); 
+        if($query->getNumRows() > 0 )
+        {
+            return $query->getResultArray();
+        }
+        else
+        {
+            return 0;
+        }
+            
+}
+        public function saveWemaCourse($email, $data)
+    {
+        $this->db->table('wema_course_access')
+            ->where('email', $email)
+            ->update($data);
+
+        if ($this->db->affectedRows() > 0) {
+            return $this->db->affectedRows();
+        } else {
+            return 0;
+        }
+    }
+
+        public function getWemaCategoryDetails($email)
+    {           
+        $builder = $this->db->table('wema_course_access');
+        $builder->select('course_type');
+        $builder->where('email', $email);
+        $query = $builder->get(); 
+        
+        if ($query->getNumRows() > 0) 
+        {
+            return $query->getResultArray()[0]['course_type'];
+        } 
+        else 
+        {
+            return 0;
+        }
+    }
+
+    public function GetRegisteredWemaCourse($email) {
+        $query = $this->db->query("CALL GetRegisteredWemaCourse(?)", [$email]);
+        return $query->getResultArray()[0]['course'];     
+    }
+
+    public function  GetUserProgressAssignedCoursesWema($userEmail, $courseId){
+
+    $query = $this->db->query("CALL GetUserProgressAssignedCoursesWema(?, ?)", [$userEmail, $courseId]);
+
+    // Check if the query was successful
+    if ($query) {
+        // Retrieve the result set
+        $result = $query->getResultArray();
+        // Free the result set
+        $query->freeResult();
+        return $result;
+    } else {
+        // Handle the error
+        return null;
+    }
+
+    }
+    public function  CheckCompletionAllCoursesWema($userEmail){
+
+    $query = $this->db->query("CALL CheckCompletionAllCoursesWema(?)", [$userEmail]);
+
+    // Check if the query was successful
+    if ($query) {
+        // Retrieve the result set
+        $result = $query->getResultArray();
+        // Free the result set
+        $query->freeResult();
+        return $result;
+    } else {
+        // Handle the error
+        return null;
+    }
+
+    }
+    public function  GetUserLatestQuizScoresWema($userEmail){
+
+        $query = $this->db->query("CALL GetUserLatestQuizScoresWema(?)", [$userEmail]);
+
+        // Check if the query was successful
+        if ($query) {
+            // Retrieve the result set
+            $result = $query->getResultArray();
+            // Free the result set
+            $query->freeResult();
+            return $result;
+        } else {
+            // Handle the error
+            return null;
+        }
+
+        }
+
+        public function getCourseIdByTitle($title)
+        {
+            $builder = $this->db->table('courses');
+            $builder->select('id');
+            $builder->where('coursetitle', $title);
+            
+            $row = $builder->get()->getRow();
+
+            return $row ? $row->id : null;
+        }
+
+        public function getCourseIdByUserEmail($email)
+{
+    $result = $this->db->table('wema_course_access')
+                 ->select('courses.id as course_id')
+                 ->join('courses', 'courses.coursetitle = wema_course_access.course')
+                 ->where('wema_course_access.email', $email)
+                 ->get()
+                 ->getRow();
+
+    return $result ? $result->course_id : null;
+}
+
+    public function checkCompletionSingleCourse($email, $courseId)
+    {
+        // 1. Get overall course progress
+        $courseProgress = $this->GetUserProgressAssignedCoursesWema($email, $courseId);
+
+        $progressValue = 0;
+        if (!empty($courseProgress) && isset($courseProgress[0]['Progress'])) {
+            $progressValue = (int) rtrim($courseProgress[0]['Progress'], '%');
+        }
+
+        // 2. Get all latest quiz scores (one latest per ref_id)
+        $quizScores = $this->GetUserLatestQuizScoresWema($email);
+
+        // 3. Calculate AVERAGE quiz score for the chosen course
+        $averageQuizScore = 0;
+
+        if (!empty($quizScores)) {
+
+            // Filter quizzes belonging to this course by course_id
+            $matchedScores = array_filter($quizScores, function($row) use ($courseId) {
+                return isset($row['course_id']) && (int)$row['course_id'] === (int)$courseId;
+            });
+
+            if (!empty($matchedScores)) {
+                $sum = 0;
+                $count = 0;
+
+                foreach ($matchedScores as $quiz) {
+                    if (isset($quiz['score'])) {
+                        $sum += (float)$quiz['score'];
+                        $count++;
+                    }
+                }
+
+                if ($count > 0) {
+                    $averageQuizScore = $sum / $count;
+                }
+            }
+        }
+
+        // 4. Check completion rules
+        if ($progressValue >= 80 && $averageQuizScore >= 80) {
+            return 1;
+        }
+
+        return 0; 
+    }
+
+    public function checkOverallCompletion($email)
+    {
+        $result = $this->CheckCompletionAllCoursesWema($email);
+        
+        if (!empty($result) && isset($result[0]['IsCompleted'])) {
+            return (int)$result[0]['IsCompleted'];
+        }
+        
+        return 0; // Default to not completed
+    }
+
+    public function getStartUpByUid($email)
+    {
+        $builder = $this->db->table('wema_course_access');
+        $builder->select('*');
+        $builder->where('email', $email);
+        $builder->orderBy('email', 'DESC');
+        $builder->limit(1);
+
+        $query = $builder->get();
+
+        return $query->getNumRows() > 0
+            ? $query->getRowArray()
+            : [];
+    }
+
+        public function CheckMissingFieldsByWemaUid($email){
+    $query = $this->db->query("CALL CheckMissingFieldsByWemaUid(?)", [$email]);
+    
+    return $query->getResultArray();
+    }
+
+        public function wema_course_access($data)
+    {       
+        $query = $this->db->table('wema_course_access')->insert($data);
+        
+        if ($query)
+        {
+            return $this->db->affectedRows();
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    //end katsina
 
     function creditPointScore($email){
     if(!empty($this->getStartUpDetailsExt($email)[0]['Country_Incorporate'])){
@@ -594,9 +842,9 @@ if ($query) {
 
 
 
-public function  GetUserProgressNewCurriculum($userEmail){
+public function  GetUserProgressNewCurriculumWema($userEmail){
 
-    $query = $this->db->query("CALL GetUserProgressNewCurriculum(?)", [$userEmail]);
+    $query = $this->db->query("CALL GetUserProgressNewCurriculumWema(?)", [$userEmail]);
     
     // Check if the query was successful
     if ($query) {
@@ -610,25 +858,6 @@ public function  GetUserProgressNewCurriculum($userEmail){
         return null;
     }
     
-}
-
-
-public function  GetUserProgressAssignedCoursesWema($userEmail){
-
-$query = $this->db->query("CALL GetUserProgressAssignedCoursesWema(?)", [$userEmail]);
-
-// Check if the query was successful
-if ($query) {
-    // Retrieve the result set
-    $result = $query->getResultArray();
-    // Free the result set
-    $query->freeResult();
-    return $result;
-} else {
-    // Handle the error
-    return null;
-}
-
 }
 
 public function applicationByCategory($batch) {
@@ -3953,7 +4182,7 @@ public function getStartUpDetailsRegAllLimit()
 public function getCertificateEmailDimp($email){
     $builder = $this->db->table('certificate');
   $builder->where('email',$email);
-  $builder->where('cert_type',"osun-dimp");
+  $builder->where('cert_type',"katsina-dimp");
   $query = $builder->get(); 
   if($query->getNumRows() > 0 )
   {
