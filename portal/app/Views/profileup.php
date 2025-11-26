@@ -27,7 +27,7 @@
                         <!-- Logo -->
                         <div class="text-center mb-1">
                             <img 
-                                src="<?= base_url('public/assets/images/katsina_logo.jpeg') ?>" 
+                                src="<?= base_url('public/assets/images/katsina_logo.png') ?>" 
                                 alt="KATSINA Logo"
                                 class="corporate-logo"
                             >
