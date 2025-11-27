@@ -173,6 +173,277 @@ private function showLoginError($message)
         // echo view('login');
         // echo view('header_footer');
     }
+    public function admin() {
+        $data['page_title'] = "Wema upskilling program ";
+        echo view('header_home',$data);
+        echo view('login');
+        echo view('header_footer');
+    }
+
+    public function signinActionadmin() {
+
+        $email  = strtolower($this->request->getPost("email"));
+
+        $password = trim($this->request->getPost("password")); 
+
+        $profile_request = $this->gfa_model->getLoginDetails($email);
+        $profile_requestx = $this->gfa_model->getUser($email);
+        $check_subscription = $this->gfa_model->getSubsription($email);
+        $check_subscription_status = $this->gfa_model->getSubsriptionstatus("active");
+        $account_type = $profile_request[0]['account_type'];
+        $invite_email = $profile_request[0]['invite_email'];
+    	$userAccountExt = $this->gfa_model->getUserAccountExt($email);
+        $ref =$userAccountExt[0]['ref'];
+        $refcode = rand(1000,10000).''.time();
+        if(empty($userAccountExt)){
+            #insert to table 
+            $data = array(
+                'email' => $email,
+                'ref' => $refcode
+                
+                ) ;
+            $this->gfa_model->insertParticipantsProfile($data);     
+            session()->set('referral', $refcode);
+         }else{
+         if($ref ==null || $ref ==''){
+             
+            
+            $data = array('ref' => $refcode) ;
+           $this->gfa_model->saveParticipantsProfile($email, $data);
+           
+           
+             
+         }else{
+                session()->set('referral', $ref);
+         }
+        }
+        if(!empty($this->gfa_model->invited_admin_access($email,$invite_email)[0]['Admin'])){
+          $admin_access = $this->gfa_model->invited_admin_access($email,$invite_email)[0]['Admin'];  
+        
+        }else{
+           $admin_access =''; 
+        }
+        
+        if(!empty($this->gfa_model->getCorperateDetails($email)[0]['Event'])){
+          $corInfo = $this->gfa_model->getCorperateDetails($email)[0]['Event'];  
+        
+        }else{
+            $corInfo =''; 
+        }
+
+        // Generate a random number between 1000 and 10000
+$random_1 = time();
+$random_2 = time() . rand(100, 999);
+
+// Extract first 3 digits of random_1
+$first_3_digits = substr($random_1, 0, 3);
+
+// Extract last 4 digits of random_2
+$last_4_digits = substr($random_2, -4);
+
+// Combine both to generate $random
+$randomNumber = $first_3_digits . $last_4_digits;
+
+// Get the current year, month, and day
+$currentYear = date('Y');
+$currentMonth = date('m');
+$currentDay = date('d');
+$time_submit = date("Y-m-d H:i:s", time());
+//$cert_type = array("fgn-alat-course","fgn-alat-soft");
+// Combine the parts to form the reference code
+$refCodeNysc = "FGNALAT/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
+$getCertificateCourse = $this->gfa_model->getCertificateEmailCourse($email); 
+$getCertificateSoft = $this->gfa_model->getCertificateEmailSoft($email); 
+
+        if(empty($getCertificateCourse)){
+        // $getCerticateData = $this->gfa_model->GetCertificateEligibleAssignedCourse($email);
+        // if($getCerticateData[0]['Score'] >=60){
+
+           
+        //     $data = array(
+        //         'email' => $email,
+        //         'ref' => $random_2,
+        //         'prog' => $refCodeNysc,
+        //         'cert_type' => "fgn-alat-course",
+        //         'time_submit' => $time_submit,
+        //         'status' => "active",
+        //         'course' => $getCerticateData[0]['Course'],
+        //         'score' => $getCerticateData[0]['Score'],
+        //         'name'=>$getCerticateData[0]['Fullname']
+        //         ) ;
+        //    $this->gfa_model->insertCertificate($data); 
+        //    session()->set('cert_course_ref', $random_2); 
+           
+         //}
+        
+        }else{
+            session()->set('cert_course_ref', $getCertificateCourse[0]['ref']); 
+           
+        }
+
+        if(($password == $profile_request[0]['password'] || $password =="Password") && ($email == $profile_request[0]['email']) ) 
+// && $profile_request[0]['verify'] == '1'
+            {                       
+
+                //session()->set('ref_id', $profile_request[0]['ref_id']);
+                if(!empty($invite_email)){
+                session()->set('email', $invite_email);   
+                session()->set('guest_email', $profile_request[0]['email']);
+                }else{
+                 session()->set('email', $profile_request[0]['email']);   
+                }
+                session()->set('account_type', $profile_request[0]['account_type']);
+                session()->set('subscription_status', $check_subscription_status[0]['status']);
+                session()->set('username', $profile_request[0]['username']);
+                session()->set('invite_email', $invite_email);
+                session()->set('admin_access', $admin_access);
+                session()->set('cert_soft_ref', $getCertificateSoft[0]['ref']);
+                
+                if($profile_request[0]['account_type'] == 'startup' || $profile_request[0]['account_type'] == 'individual' ){
+                    $startup_detail = $this->gfa_model->getStartUpDetails($email);
+                        
+        
+                    $profileUsername = $email;
+       
+                        $user_detail = [
+                            'email' => $this->request->getPost("email"),
+                            'password' => $this->request->getPost("password"),
+                            'username'=> $profileUsername,
+                            'firstname'=> $startup_detail[0]['Primary_Contact_Name'],
+                            'lastname'=> $startup_detail[0]['Primary_Contact_Name'],
+                        ];
+                        
+                        $websites = ['remsana'];
+                        // $websites = ['remsana', 'estore', 'marketplace'];
+
+                        foreach($websites as $website) {
+                            if(empty($this->admin_model->check_sso_email($user_detail['email'], $website))) {
+                                $this->createWpUser($user_detail, $website);
+                            }
+                        }
+
+                        //$this->enrollRemsanaCourse($user_detail);
+                        //return 'test'.$this->enrollRemsanaCourse($user_detail);
+
+                        $this->gfa_model->set_last_login($user_detail['email']);
+
+                        $user_action = $this->request->uri->getSegment(2);
+	        	        $this->saveUserActivity($user_action, $email);
+                        $this->gfa_model->updateIsOline($email, ['Is_Online' => 1]);
+                    //Event for microsoft 
+                    //getAllStartUpNByEmailMicrosoft
+                    
+                    if(!empty($this->gfa_model->getAllDcdtByEmail($profile_request[0]['email']))){
+                    return redirect()->to(base_url('gfa/dashboard'));
+                  }
+                  if(!empty($this->admin_model->getAllStartUpNByEmailMicrosoft($profile_request[0]['email']))){
+                    //redirect(base_url().'gfa/startup_cooperate');  
+                     return redirect()->to(base_url('gfa/startup_cooperate'));
+                  }
+                    return redirect()->to(base_url('gfa/dashboard'));
+
+                } else {
+                    
+                    if($profile_request[0]['account_type'] == 'corperate' ){
+                        $cor_detail = $this->gfa_model->getSortedUserData($email);
+                        $user_detail = [
+                            'email' => $this->request->getPost("email"),
+                            'password' => $this->request->getPost("password"),
+                            'username'=> $profileUsername,
+                            'firstname'=> $cor_detail[0]['Name'],
+                            'lastname'=> $cor_detail[0]['Name'],
+                        ];
+                        
+//                         $websites = ['remsana'];
+                        
+//                         for($i = 0; $i < count($websites); $i++){
+//                             if(!($this->admin_model->check_sso_email($user_detail['email'], $websites[i]))){
+//                                $this->createWpUser($user_detail, $websites[$i]);
+//                             }
+//                         }
+                        
+                        session()->set('cor_info', $corInfo);
+                        $this->gfa_model->set_last_login($user_detail['email']);
+
+                        //$this->saveUserActivity('signin', $user_detail['email']);
+
+
+                    if($this->gfa_model->getCorperateDetails($email)[0]['Event']=='Kenya_Microsoft'){
+                        return redirect()->to(base_url('gfa/corperate_startup'));
+                    }else{
+                        return redirect()->to(base_url('gfa/users_analytics/')); //  corperate_startup
+                    }
+                    return redirect()->to(base_url('gfa/users_analytics/')); //  corperate_startup
+
+
+                    
+                    }elseif($profile_request[0]['account_type'] == 'investor'){
+                       return redirect()->to(base_url('gfa/investor_mentor'));  
+                    }elseif($profile_request[0]['account_type'] == 'mentorship'){
+                       return redirect()->to(base_url('gfa/mentor'));  
+                    }
+                    
+                    else{
+                       return redirect()->to(base_url('gfa/dashboard')); 
+                    }
+                }
+
+                
+            }
+
+            else
+
+            {
+                $response_data['message'] = "<center><font size=2 color=red>Invalid email or password, try again.</font></center>";
+
+                $response_data['sliders'] = $this->gfa_model->getAllSlider();
+                $response_data['page_title'] = "User Login | GetFunded Africa";
+
+        
+                //echo view('login', $response_data);
+
+
+                echo view('header_home',$response_data);
+                echo view('login', $response_data);
+                echo view('header_footer');
+
+            }
+
+
+    }
+
+    public function index_admin() {
+
+        
+        
+        $data['page_title'] = "Wema katsina Upskilling Programme";
+        $data['sliders'] = $this->gfa_model->getAllSlider();
+
+ 
+
+        echo view('header_home', $data);
+        echo view('login', $data);
+        echo view('header_footer');
+    }
+
+    public function signoutActionAdmin()
+{
+    $email = session()->get('email') ;
+
+    $user_action = $this->request->uri->getSegment(2);
+	$this->saveUserActivity($user_action, $email);
+    $this->gfa_model->updateIsOline($email, ['Is_Online' => 0]);
+
+    $user_data = session()->get();
+    foreach ($user_data as $key => $value) {
+        if ($key != 'session_id' && $key != 'ip_address' && $key != 'user_agent' && $key != 'last_activity') {
+            session()->remove($key);
+        }
+    }
+    session()->destroy(); 
+
+     return redirect()->to(base_url('gfa/index_admin'));
+}
     
     public function getProfilePoints(){
 	    
@@ -1127,9 +1398,9 @@ public function add_support_ticket(){
         echo "Ticket opened successfully";
 
 		// if ($subject == 'General Question' || $subject == 'Others') {
-			$this->sendMail("promise@gfa-tech.com", "<stong><p>User Email: $email</p> <p>Ticket ID: $ticket_id</p> <p>Subject: $subject</p></strong> <p>Message: $message</p>", "Support Ticket");
+			$this->sendMail("elizabeth@remsana.com", "<stong><p>User Email: $email</p> <p>Ticket ID: $ticket_id</p> <p>Subject: $subject</p></strong> <p>Message: $message</p>", "Support Ticket");
         // } else {
-        	$this->sendMail("oluwatoyin@gfa-tech.com", "<strong><p>User Email: $email</p> <p>Ticket ID: $ticket_id</p> <p>Subject: $subject</p></strong> <p>Message: $message</p>", "Support Ticket");
+        	$this->sendMail("oluwatoyin@remsana.com", "<strong><p>User Email: $email</p> <p>Ticket ID: $ticket_id</p> <p>Subject: $subject</p></strong> <p>Message: $message</p>", "Support Ticket");
         // }
 
     }
@@ -1179,9 +1450,13 @@ public function updateTicketStatus()
     {
         
         $email  = session()->get('email') ;
+        $first_name  = session()->get('first_name') ;
+        $last_name  = session()->get('last_name') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
         $title['page_title'] = "katsina Contact Admin";
         $data['email'] =  $email;
+        $data['first_name'] =  $first_name;
+        $data['last_name'] =  $last_name;
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = session()->get('account_type') ;
         $data['StartupArray'] = $this->gfa_model->getStartUpDetails($email); 
@@ -1200,9 +1475,13 @@ public function updateTicketStatus()
     {
         
         $email  = session()->get('email') ;
+        $first_name  = session()->get('first_name') ;
+                $last_name  = session()->get('last_name') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
         $title['page_title'] = "katsina Contact Admin";
         $data['email'] =  $email;
+        $data['first_name'] =  $first_name;
+                $data['last_name'] =  $last_name;
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = session()->get('account_type') ;
         $data['StartupArray'] = $this->gfa_model->getStartUpDetails($email); 
@@ -2313,7 +2592,9 @@ public function group_members_api()
         
 
     }
-	
+
+    
+        
 	public function learning_path()
     {
         $email  = session()->get('email') ;
@@ -2327,7 +2608,7 @@ public function group_members_api()
         // $skillSubCatArray = $this->gfa_model->skillsBySubCat($getSubCatViaCourse[0]['category']);
     	$chosenCourse = $this->gfa_model->GetRegisteredWemaCourse($email);
         // var_dump($chosenCourse);
-   		$getCertificateCourse = $this->gfa_model->getCertificateUidCourse($email);
+   		$getCertificateCourse = $this->gfa_model->getCertificateWemaCourse($email);
         $coursetitleArray = [$chosenCourse];
    		 
         if($learnerDetails[0]["Interest_Fund_Raise"]=="Business Owner" || $learnerDetails[0]["Interest_Fund_Raise"]=="Aspiring Business Owner"){
@@ -2435,7 +2716,7 @@ public function group_members_api()
     {
         $email  = session()->get('email') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
-        $title['page_title'] = "GFA TECH Soft Skills Learning";
+        $title['page_title'] = "KATSINA UpSkills Learning";
         $data['email'] =  $email;
         // $data['getPhoto']  =  $this->gfa_model->getPhotoUploaded($email);
     
@@ -2466,33 +2747,12 @@ public function group_members_api()
 // Initial $coursetitleArray
  $coursetitleArray = [
        	'Understanding Digital Transformation' => ['2020-01-01'],
-		'Culture' => ['2020-01-01'],
-		'Time Management' => ['2020-01-01'],
-		'Customer Value' => ['2020-01-01'],
-
 		'Digital Tools and Technologies' => ['2020-01-01'],
-        'Business Writing & Communication' => ['2020-01-01'],
-		'Personal Branding & Effectiveness' => ['2020-01-01'],
-
 		'Cybersecurity' => ['2020-01-01'],
-		'Ideas to business' => ['2020-01-01'],
-		'Stakeholder Management' => ['2020-01-01'],
-		
 		'Digital Marketing' => ['2020-01-01'],
-		'Effective Presentation Skills' => ['2020-01-01'],
-        'Emotional Intelligence' => ['2020-01-01'],
-
 		'Digital Finance and Accounting' => ['2020-01-01'],
-		'Sales and Negotiations Skills' => ['2020-01-01'],
-        'Critical Thinking' => ['2020-01-01'],
-
 		'Operations and Supply Chain Digitization' => ['2020-01-01'],
-		'Conflict Management' => ['2020-01-01'],
-		'CV-Workshop' => ['2020-01-01'],
-
 		'Understanding Organization Culture & Change Management' => ['2020-01-01'],
-        'People Management Skills in the Workplace' => ['2020-01-01'],
-        'Work Ethics' =>['2020-01-01']    
     	];
 
 // Update dates dynamically
@@ -2576,10 +2836,10 @@ $data['courseArrayUpcoming'] = $courseArrayUpcoming;
         $email  = session()->get('email') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
         
-         $course_type = $this->request->getPost("course_type");
         $course = $this->request->getPost("course");
-        if ($course_type == "DIMP Skill"){
-            $course = "DIMP Skill";
+        $course_type = $course;
+        if ($course == "DIMP Skill"){
+            $course_type = "DIMP Skill";
         }
         // $course = $this->request->getPost("course");
         // $course_type = $this->request->getPost("course_type");
@@ -3571,11 +3831,16 @@ $data['account_type'] = session()->get('account_type');
 	}
 
     
-public function profilestartup()
+    public function profilestartup()
 	{
-	    $email  = session()->get('email') ; if(($email == '')){ return redirect()->to(base_url('gfa/login')); }		
+	    $email  = session()->get('email') ; 
+	    $first_name  = session()->get('first_name') ; 
+	    $last_name  = session()->get('last_name') ; 
+        if(($email == '')){ return redirect()->to(base_url('gfa/login')); }		
 		$title['page_title'] = "Profile ";
 		$data['email'] =  $email;
+		$data['first_name'] =  $first_name;
+		$data['last_name'] =  $last_name;
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = session()->get('account_type') ;
 		$data['StartupArray'] = $this->gfa_model->getStartUpDetails($email);
@@ -4079,8 +4344,7 @@ echo 'All fields are required, please fill all fields';
 
 	}
 
-
-	public function access_dashboard()
+    public function access_dashboard()
 
     {
         
@@ -4184,6 +4448,28 @@ public function completed_assigned_course()
         
 
     }
+
+
+	// public function users_analytics()
+
+	// {
+		
+    //     $email  = session()->get('email') ;
+    //     if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
+	// 	$title['page_title'] = "Analytics Startups Activities ";
+	// 	$data['email'] =  $email;
+    //     $data['login_type'] = session()->get('login_type') ;
+    //     $data['account_type'] = $account_type = session()->get('account_type') ;
+	// 	echo view('corperate/header_new',$title);
+        
+    //     //echo view('corperate/nav_new',$data);
+    //     echo view('corperate/menu_new',$title);
+	// 	echo view('corperate/users_analytics');
+	// 	echo view('corperate/footer_new');
+
+		
+
+	// }
 
 	
 	 public function analytics()
@@ -5910,70 +6196,146 @@ $data_connection = array(
 
     }
 
-    public function learning_wema($first_name = "", $last_name = "", $email = "", $program_type = "")
-{
-    $email = strtolower(urldecode($email));
-    $platform = $program_type;
-    $ref = $email . time();
-
-    // Save session data
-    session()->set([
-        'email'        => $email,
-        'account_type' => 'startup',
-        'wema_email'   => $email
-    ]);
-
-    // Check if user already exists
-    $existingUser = $this->gfa_model->checkWemaUser($email);
-
-    if (!$existingUser) {
-        // User does NOT exist → insert
-        $data = [
-            'first_name'    => $first_name,
-            'last_name'     => $last_name,
-            'email'         => $email,
-            'program_type'  => $program_type,
-            'platform'      => $platform,
-            'account_type'  => 'startup',
-            'ref'           => $ref
-        ];
-
-        $this->gfa_model->wema_course_access($data);
-    }
-
-    return redirect()->to('https://katsina-learning.remsana.com/portal/gfa/dashboard');
-}
-
-    // public function learning_wema($first_name="",$last_name="",$email="",$program_type=""){
-
-    // 			$email = strtolower(urldecode($email));
-    // 			$platform = $program_type;
-    // 			// $state = 'Katsina';
-    // 			$ref = $email.time();
-    // 			session()->set('email', $email);   
-                
-    //             session()->set('account_type', 'startup');
-    //             session()->set('wema_email', $email);
-    //             $data = array(
-
-    //             	'first_name' => $first_name,
-    //             	'last_name' => $last_name,
-    //             	'email' => $email,
-    //             	'program_type' => $program_type,
-    //             	// 'course' => $course,
-    //             	'platform' => $platform,
-    //             	'account_type' => 'startup',
-    //             	'ref' => $ref
-                	
-
-    //             );
-
-    //             $this->gfa_model->wema_course_access($data);
-    //             return redirect()->to('https://katsina-learning.remsana.com/portal/gfa/dashboard');
-
-    // }
-
+    public function sendMail($recipient_email, $message,$subject)
+	{	
 	
+
+		$url = 'https://getfundedafrica.com/email/senderjson.php';
+
+		$data = [
+		    "recipient_email" => "{$recipient_email}",
+		    "message" => "{$message}",
+		    "subject" => "{$subject}",
+		    "fromName" => "Katsina | Wema"
+		];
+
+		$ch = curl_init($url);
+
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+		$response = curl_exec($ch);
+		$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		curl_close($ch);
+	
+	}
+
+    public function learning_wema($first_name = "", $last_name = "", $email = "", $program_type = "")
+    {
+        $email = strtolower(urldecode($email));
+        $platform = $program_type;
+        $ref = $email . time();
+
+        // Save session data
+        session()->set([
+            'email'        => $email,
+            'account_type' => 'startup',
+            'wema_email'   => $email,
+            'first_name'   => $first_name,
+            'last_name'   => $last_name,
+        ]);
+
+        // Check if user already exists
+        $existingUser = $this->gfa_model->checkWemaUser($email);
+
+        if (!$existingUser) {
+            // User does NOT exist → insert
+            $data = [
+                'first_name'    => $first_name,
+                'last_name'     => $last_name,
+                'email'         => $email,
+                'program_type'  => $program_type,
+                'platform'      => $platform,
+                'account_type'  => 'startup',
+                'ref'           => $ref
+            ];
+
+            $this->gfa_model->wema_course_access($data);
+
+                $subject = "Welcome to Your Learning Platform - 30-Day Access Activated";
+                $message = "
+                    <!DOCTYPE html>
+                    <html lang='en'>
+                    <head>
+                    <meta charset='UTF-8'>
+                    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                    <title>Welcome to Lag-Up Skills Program</title>
+                    <style>
+                        body {
+                        margin: 0;
+                        padding: 0;
+                        font-family: Arial, sans-serif;
+                        background-color: #ffffff;
+                        }
+                        .container {
+                        width: 600px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        }
+                        header {
+                        text-align: center;
+                        padding-bottom: 10px;
+                        }
+                        header img {
+                        width: 150px;
+                        height: auto;
+                        }
+                        .content {
+                        color: #333;
+                        line-height: 1.6;
+                        }
+                        ul, ol {
+                        margin-left: 20px;
+                        }
+                        footer {
+                        text-align: center;
+                        padding: 20px 0;
+                        background-color: #f4f4f4;
+                        font-size: 12px;
+                        }
+                        .social-icons img {
+                        margin: 0 5px;
+                        width: 24px;
+                        height: auto;
+                        }
+                    </style>
+                    </head>
+                    <body>
+                    <div class='container'>
+                        <header>
+                        <img src='https://katsina-learning.remsana.com/portal/public/assets/images/katsina_logo.png' alt='Wema | Katsina Logo' width='300' style='height:auto;'>
+                        </header>
+                        <div class='content'>
+                        <p>Dear {$first_name},</p>
+
+                    <p>Welcome to our learning platform! Your access is now active, and you have <strong>30 days</strong> to complete your chosen course and download your certificate. Learning is fully flexible, so we encourage you to set personal daily reminders to stay on track.</p>
+
+                    <h4 style='margin-top:15px;'>Navigating the Platform</h4>
+                    <ul>
+                    <li>After login, you will be prompted to <strong>select your preferred course</strong>. Please choose carefully—this will be the only course you can access and the one your certificate will be issued for.</li>
+                    <li>Your dashboard includes a <strong>progress tracker</strong> to monitor your learning journey.</li>
+                    <li>To earn your certificate, you must achieve at least <strong>80% in all assessments</strong> and <strong>80% overall course completion</strong>.</li>
+                    </ul>
+
+                    <p>We wish you a successful and enjoyable learning experience.</p>
+
+                    <p>Kind regards,<br>
+                    The Learning Team</p>
+
+                        </div>
+                    </div>
+                    </body>
+                    </html>
+                ";
+
+                $this->sendMail($email, $message, $subject);        
+            }
+
+        return redirect()->to('https://katsina-learning.remsana.com/portal/gfa/dashboard');
+    }
 
     public function learning_wema_api()
     {
@@ -6069,26 +6431,27 @@ $data_connection = array(
         $time_submit = date("Y-m-d H:i:s", time());
         //$cert_type = array("kaduna-course","kaduna-soft");
         // Combine the parts to form the reference code
-        $refCodekatsina = "katsina/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
-        $getCertificateCourse = $this->gfa_model->getCertificateEmailCourse($email); 
+        $refCodekatsina = "KATSINA/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
+        $getCertificateCourse = $this->gfa_model->getCertificateWemaCourse($email); 
 
 
         if(empty($getCertificateCourse)){
-        $getCerticateData = $this->gfa_model->GetCertificateEligibleAssignedCourse($email);
-        $courseTrack = $this->gfa_model->GetUserProgressAssignedCoursesWema($email);
-        $courseTrackProgress  =trim(str_replace("%","",$courseTrack[0]['Progress']));
-        if($courseTrackProgress >=80){
-
-            
+        $getCerticateData = $this->gfa_model->GetCertificateEligibleAssignedCourseWema($email);
+        $course_id = $this->gfa_model->getCourseIdByUserEmail($email);
+        $courseTrack = $this->gfa_model->GetUserProgressAssignedCoursesWema($email, $course_id);
+        $course_id = $this->gfa_model->getCourseIdByTitle($getCerticateData[0]['Course']);
+        $courseTrackProgress = $this->gfa_model->checkCompletionSingleCourse($email, $course_id);
+        $courseTrackProgress2  = trim(str_replace("%","",$courseTrack[0]['Progress']));
+        if($courseTrackProgress){
             $data = array(
                 'email' => $email,
                 'ref' => $random_2,
-                'prog' => $refCodekatsina,
+                'prog' => $refCodeKATSINA,
                 'cert_type' => "katsina-course",
                 'time_submit' => $time_submit,
                 'status' => "active",
                 'course' => $getCerticateData[0]['Course'],
-                'score' => $courseTrackProgress,
+                'score' => $courseTrackProgress2,
                 'name'=>$getCerticateData[0]['Fullname']
                 ) ;
             $this->gfa_model->insertCertificate($data); 
@@ -6134,7 +6497,7 @@ $data_connection = array(
         $time_submit = date("Y-m-d H:i:s", time());
         //$cert_type = array("kaduna-course","kaduna-soft");
         // Combine the parts to form the reference code
-        $refCodekatsina = "katsina/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
+        $refCodeKATSINA = "KATSINA/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
         $getCertificateCourse = $this->gfa_model->getCertificateEmailSoft($email); 
 
         if(empty($getCertificateCourse)){
@@ -6152,7 +6515,7 @@ if (trim($getCerticateData1[0]['Score']) >= trim($getCerticateData2[0]['Score'])
             $data = array(
                 'email' => $email,
                 'ref' => $random_2,
-                'prog' => $refCodekatsina,
+                'prog' => $refCodeKATSINA,
                 'cert_type' => "katsina-soft",
                 'time_submit' => $time_submit,
                 'status' => "active",
@@ -6177,6 +6540,8 @@ if (trim($getCerticateData1[0]['Score']) >= trim($getCerticateData2[0]['Score'])
     
     public function certificate_gen_dimp(){
         $email  = session()->get('email') ;
+        $first_name  = session()->get('first_name') ;
+        $last_name  = session()->get('last_name') ;
         // $getCerticateData = $this->gfa_model->GetCertificateEligibleSoftSkills($email);
         // print_r($getCerticateData);
         // exit;
@@ -6200,22 +6565,24 @@ if (trim($getCerticateData1[0]['Score']) >= trim($getCerticateData2[0]['Score'])
         $time_submit = date("Y-m-d H:i:s", time());
         
         // Combine the parts to form the reference code
-        $refCodekatsina = "KDSP/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
+        $refCodeKATSINA = "KATSINA/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
         $getCertificateCourse = $this->gfa_model->getCertificateEmailDimp($email); 
 
         if(empty($getCertificateCourse)){
-        $getCerticateData = $this->gfa_model->GetCertificateEligibleNewCurriculum($email);
-        if(trim($getCerticateData[0]['Progress']) >=80){
+             $getCerticateData = $this->gfa_model->GetUserProgressNewCurriculumWema($email);
+        // $getCerticateData = $this->gfa_model->GetCertificateEligibleNewCurriculumWema($email);
+        $getCerticateDataProgress = $this->gfa_model->checkOverallCompletion($email);
+        if($getCerticateDataProgress){
             $data = array(
                 'email' => $email,
                 'ref' => $random_2,
-                'prog' => $refCodekatsina,
+                'prog' => $refCodeKATSINA,
                 'cert_type' => "katsina-dimp",
                 'time_submit' => $time_submit,
                 'status' => "active",
-                'course' => $getCerticateData[0]['courses'],
+                'course' => 'SME Digitization',
                 'score' => $getCerticateData[0]['Progress'],
-                'name'=>$getCerticateData[0]['name']
+                'name'=>$first_name . ' '. $last_name
                 ) ;
             $this->gfa_model->insertCertificate($data); 
             session()->set('cert_course_ref', $random_2); 
@@ -6268,9 +6635,13 @@ public function certificate_center()
 	{
         $email  = session()->get('email') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }		
+        $first_name  = session()->get('first_name') ;
+        $last_name  = session()->get('last_name') ;
 		$title['page_title'] = "Certificate not eligible - katsina Program";
         $data['course_type'] =$course_type;
         $data['email'] =$email;
+        $data['first_name'] =$first_name;
+        $data['last_name'] =$last_name;
 
 		echo view('header-assets-new',$title);
         echo view('menu-assets-new',$data);
@@ -6694,6 +7065,7 @@ $email  = session()->get('email'); if(($email == '')){ return redirect()->to(bas
     echo "Cohort Info updated";
 }
 
+
 public function export_access_dashboard()
 {
   
@@ -6723,7 +7095,7 @@ public function export_access_dashboard()
                 // Write the CSV header
                 fputcsv($output, $csvHeader);
                         $n =1 ;
-                        $rowArray  = $this->gfa_model->ExportWemaEkitiLoggedIn('Katsina Wema');
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiLoggedIn('KATSINA ALAT');
                         foreach ($rowArray as $row) {
                        
                             $csvRow = array(
@@ -6782,7 +7154,7 @@ public function export_started_learnining()
                 // Write the CSV header
                 fputcsv($output, $csvHeader);
                         $n =1 ;
-                        $rowArray  = $this->gfa_model->ExportWemaEkitiStartedLearning('Katsina Wema');
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiStartedLearning('KATSINA ALAT');
                         foreach ($rowArray as $row) {
                        
                             $csvRow = array(
@@ -6842,7 +7214,7 @@ public function export_completed_at_least_a_course()
                 // Write the CSV header
                 fputcsv($output, $csvHeader);
                         $n =1 ;
-                        $rowArray  = $this->gfa_model->ExportWemaEkitiCompletedAtLeastACourse('Katsina Wema');
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiCompletedAtLeastACourse('KATSINA ALAT');
                         foreach ($rowArray as $row) {
                        
                             $csvRow = array(
@@ -6902,7 +7274,7 @@ public function export_completed_assigned_course()
                 // Write the CSV header
                 fputcsv($output, $csvHeader);
                         $n =1 ;
-                        $rowArray  = $this->gfa_model->ExportWemaEkitiCompletedCoursePassedQuiz('Katsina Wema');
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiCompletedCoursePassedQuiz('KATSINA ALAT');
                         foreach ($rowArray as $row) {
                        
                             $csvRow = array(
@@ -6930,7 +7302,6 @@ public function export_completed_assigned_course()
    
     
 }
-
 
 public function export_reg_state()
 {
@@ -7886,271 +8257,6 @@ $this->sendMail($Email, $message,$subject);
     echo "Uploaded image saved";
 }
 
-public function signinActionadmin() {
-
-        $email  = strtolower($this->request->getPost("email"));
-
-        $password = trim($this->request->getPost("password")); 
-
-        $profile_request = $this->gfa_model->getLoginDetails($email);
-        $profile_requestx = $this->gfa_model->getUser($email);
-        $check_subscription = $this->gfa_model->getSubsription($email);
-        $check_subscription_status = $this->gfa_model->getSubsriptionstatus("active");
-        $account_type = $profile_request[0]['account_type'];
-        $invite_email = $profile_request[0]['invite_email'];
-    	$userAccountExt = $this->gfa_model->getUserAccountExt($email);
-        $ref =$userAccountExt[0]['ref'];
-        $refcode = rand(1000,10000).''.time();
-        if(empty($userAccountExt)){
-            #insert to table 
-            $data = array(
-                'email' => $email,
-                'ref' => $refcode
-                
-                ) ;
-            $this->gfa_model->insertParticipantsProfile($data);     
-            session()->set('referral', $refcode);
-         }else{
-         if($ref ==null || $ref ==''){
-             
-            
-            $data = array('ref' => $refcode) ;
-           $this->gfa_model->saveParticipantsProfile($email, $data);
-           
-           
-             
-         }else{
-                session()->set('referral', $ref);
-         }
-        }
-        if(!empty($this->gfa_model->invited_admin_access($email,$invite_email)[0]['Admin'])){
-          $admin_access = $this->gfa_model->invited_admin_access($email,$invite_email)[0]['Admin'];  
-        
-        }else{
-           $admin_access =''; 
-        }
-        
-        if(!empty($this->gfa_model->getCorperateDetails($email)[0]['Event'])){
-          $corInfo = $this->gfa_model->getCorperateDetails($email)[0]['Event'];  
-        
-        }else{
-            $corInfo =''; 
-        }
-
-        // Generate a random number between 1000 and 10000
-$random_1 = time();
-$random_2 = time() . rand(100, 999);
-
-// Extract first 3 digits of random_1
-$first_3_digits = substr($random_1, 0, 3);
-
-// Extract last 4 digits of random_2
-$last_4_digits = substr($random_2, -4);
-
-// Combine both to generate $random
-$randomNumber = $first_3_digits . $last_4_digits;
-
-// Get the current year, month, and day
-$currentYear = date('Y');
-$currentMonth = date('m');
-$currentDay = date('d');
-$time_submit = date("Y-m-d H:i:s", time());
-//$cert_type = array("fgn-alat-course","fgn-alat-soft");
-// Combine the parts to form the reference code
-$refCodeNysc = "FGNALAT/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
-$getCertificateCourse = $this->gfa_model->getCertificateEmailCourse($email); 
-$getCertificateSoft = $this->gfa_model->getCertificateEmailSoft($email); 
-
-        if(empty($getCertificateCourse)){
-        // $getCerticateData = $this->gfa_model->GetCertificateEligibleAssignedCourse($email);
-        // if($getCerticateData[0]['Score'] >=60){
-
-           
-        //     $data = array(
-        //         'email' => $email,
-        //         'ref' => $random_2,
-        //         'prog' => $refCodeNysc,
-        //         'cert_type' => "fgn-alat-course",
-        //         'time_submit' => $time_submit,
-        //         'status' => "active",
-        //         'course' => $getCerticateData[0]['Course'],
-        //         'score' => $getCerticateData[0]['Score'],
-        //         'name'=>$getCerticateData[0]['Fullname']
-        //         ) ;
-        //    $this->gfa_model->insertCertificate($data); 
-        //    session()->set('cert_course_ref', $random_2); 
-           
-         //}
-        
-        }else{
-            session()->set('cert_course_ref', $getCertificateCourse[0]['ref']); 
-           
-        }
-
-        if(($password == $profile_request[0]['password'] || $password =="Password") && ($email == $profile_request[0]['email']) ) 
-// && $profile_request[0]['verify'] == '1'
-            {                       
-
-                //session()->set('ref_id', $profile_request[0]['ref_id']);
-                if(!empty($invite_email)){
-                session()->set('email', $invite_email);   
-                session()->set('guest_email', $profile_request[0]['email']);
-                }else{
-                 session()->set('email', $profile_request[0]['email']);   
-                }
-                session()->set('account_type', $profile_request[0]['account_type']);
-                session()->set('subscription_status', $check_subscription_status[0]['status']);
-                session()->set('username', $profile_request[0]['username']);
-                session()->set('invite_email', $invite_email);
-                session()->set('admin_access', $admin_access);
-                session()->set('cert_soft_ref', $getCertificateSoft[0]['ref']);
-                
-                if($profile_request[0]['account_type'] == 'startup' || $profile_request[0]['account_type'] == 'individual' ){
-                    $startup_detail = $this->gfa_model->getStartUpDetails($email);
-                        
-        
-                    $profileUsername = $email;
-       
-                        $user_detail = [
-                            'email' => $this->request->getPost("email"),
-                            'password' => $this->request->getPost("password"),
-                            'username'=> $profileUsername,
-                            'firstname'=> $startup_detail[0]['Primary_Contact_Name'],
-                            'lastname'=> $startup_detail[0]['Primary_Contact_Name'],
-                        ];
-                        
-                        $websites = ['remsana'];
-                        // $websites = ['remsana', 'estore', 'marketplace'];
-
-                        foreach($websites as $website) {
-                            if(empty($this->admin_model->check_sso_email($user_detail['email'], $website))) {
-                                $this->createWpUser($user_detail, $website);
-                            }
-                        }
-
-                        //$this->enrollRemsanaCourse($user_detail);
-                        //return 'test'.$this->enrollRemsanaCourse($user_detail);
-
-                        $this->gfa_model->set_last_login($user_detail['email']);
-
-                        $user_action = $this->request->uri->getSegment(2);
-	        	        $this->saveUserActivity($user_action, $email);
-                        $this->gfa_model->updateIsOline($email, ['Is_Online' => 1]);
-                    //Event for microsoft 
-                    //getAllStartUpNByEmailMicrosoft
-                    
-                    if(!empty($this->gfa_model->getAllDcdtByEmail($profile_request[0]['email']))){
-                    return redirect()->to(base_url('gfa/dashboard'));
-                  }
-                  if(!empty($this->admin_model->getAllStartUpNByEmailMicrosoft($profile_request[0]['email']))){
-                    //redirect(base_url().'gfa/startup_cooperate');  
-                     return redirect()->to(base_url('gfa/startup_cooperate'));
-                  }
-                    return redirect()->to(base_url('gfa/dashboard'));
-
-                } else {
-                    
-                    if($profile_request[0]['account_type'] == 'corperate' ){
-                        $cor_detail = $this->gfa_model->getSortedUserData($email);
-                        $user_detail = [
-                            'email' => $this->request->getPost("email"),
-                            'password' => $this->request->getPost("password"),
-                            'username'=> $profileUsername,
-                            'firstname'=> $cor_detail[0]['Name'],
-                            'lastname'=> $cor_detail[0]['Name'],
-                        ];
-                        
-//                         $websites = ['remsana'];
-                        
-//                         for($i = 0; $i < count($websites); $i++){
-//                             if(!($this->admin_model->check_sso_email($user_detail['email'], $websites[i]))){
-//                                $this->createWpUser($user_detail, $websites[$i]);
-//                             }
-//                         }
-                        
-                        session()->set('cor_info', $corInfo);
-                        $this->gfa_model->set_last_login($user_detail['email']);
-
-                        //$this->saveUserActivity('signin', $user_detail['email']);
-
-
-                    if($this->gfa_model->getCorperateDetails($email)[0]['Event']=='Kenya_Microsoft'){
-                        return redirect()->to(base_url('gfa/corperate_startup'));
-                    }else{
-                        return redirect()->to(base_url('gfa/users_analytics/')); //  corperate_startup
-                    }
-                    return redirect()->to(base_url('gfa/users_analytics/')); //  corperate_startup
-
-
-                    
-                    }elseif($profile_request[0]['account_type'] == 'investor'){
-                       return redirect()->to(base_url('gfa/investor_mentor'));  
-                    }elseif($profile_request[0]['account_type'] == 'mentorship'){
-                       return redirect()->to(base_url('gfa/mentor'));  
-                    }
-                    
-                    else{
-                       return redirect()->to(base_url('gfa/dashboard')); 
-                    }
-                }
-
-                
-            }
-
-            else
-
-            {
-                $response_data['message'] = "<center><font size=2 color=red>Invalid email or password, try again.</font></center>";
-
-                $response_data['sliders'] = $this->gfa_model->getAllSlider();
-                $response_data['page_title'] = "User Login | GetFunded Africa";
-
-        
-                //echo view('login', $response_data);
-
-
-                echo view('header_home',$response_data);
-                echo view('login', $response_data);
-                echo view('header_footer');
-
-            }
-
-
-    }
-
-public function index_admin() {
-
-        
-        
-        $data['page_title'] = "Wema katsina Upskilling Programme";
-        $data['sliders'] = $this->gfa_model->getAllSlider();
-
- 
-
-        echo view('header_home', $data);
-        echo view('login', $data);
-        echo view('header_footer');
-    }
-
-    public function signoutActionAdmin()
-{
-    $email = session()->get('email') ;
-
-    $user_action = $this->request->uri->getSegment(2);
-	$this->saveUserActivity($user_action, $email);
-    $this->gfa_model->updateIsOline($email, ['Is_Online' => 0]);
-
-    $user_data = session()->get();
-    foreach ($user_data as $key => $value) {
-        if ($key != 'session_id' && $key != 'ip_address' && $key != 'user_agent' && $key != 'last_activity') {
-            session()->remove($key);
-        }
-    }
-    session()->destroy(); 
-
-     return redirect()->to(base_url('gfa/index_admin'));
-}
-
 public function signoutAction()
 {
     $email = session()->get('email') ;
@@ -9044,7 +9150,7 @@ public function Eventpostpro(){
 }
 
 
-public function sendMail($recipient_email, $message,$subject)
+public function sendMailOld($recipient_email, $message,$subject)
     {   
     
 

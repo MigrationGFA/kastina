@@ -1,7 +1,7 @@
 <?php 
                 $this->gfa_model = model('App\Models\GfaModel');
                 $this->admin_model = model('App\Models\AdminModel');
-				$sql =  $this->gfa_model->WemaEkitiAnalytics('Katsina Wema');
+				$sql =  $this->gfa_model->WemaEkitiAnalytics('KATSINA ALAT');
 
       ?>
 <div class="app-content content ">

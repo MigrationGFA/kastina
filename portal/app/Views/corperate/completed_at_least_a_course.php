@@ -32,7 +32,7 @@
         <?php         
                  
                 
-           $row  = $this->gfa_model->ExportWemaEkitiCompletedAtLeastACourse('Katsina Wema');
+           $row  = $this->gfa_model->ExportWemaEkitiCompletedAtLeastACourse('KATSINA ALAT');
                    
            
            

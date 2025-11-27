@@ -87,7 +87,11 @@
         <div class="row align-items-center">
 
             <div class="col-6">
+
                 <img src="https://getfundedafrica.com/assets/images/katsina-logo.jpg" 
+
+              
+
                      alt="Logo" class="img-fluid" style="max-width:150px;">
             </div>
 
