@@ -9125,7 +9125,7 @@ public function Eventpostpro(){
 }
 
 
-public function sendMail($recipient_email, $message,$subject)
+public function sendMailOld($recipient_email, $message,$subject)
     {   
     
 
