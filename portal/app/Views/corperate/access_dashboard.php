@@ -36,9 +36,9 @@
                    
            
            
-    	if(!empty($row)){     
-    	    
-    	    ?>
+      if(!empty($row)){     
+          
+          ?>
           <div class="table-responsive">
             <table class="table" id="table">
               <thead>
@@ -48,6 +48,8 @@
                   <th>Last Name</th>
                   
                    <th>First Name</th>
+                   <th>Course</th>
+                   <th>Date</th>
                   
                   
                 </tr>
@@ -55,9 +57,9 @@
               <tbody>
                 <?php
                 $n = 1;
-                $s = 1;	
+                $s = 1; 
                 $count = 0;
-				foreach($row as $rowArray){   $count += $n; 
+        foreach($row as $rowArray){   $count += $n; 
                 
                 ?> 
                 <tr class="data">
@@ -90,6 +92,30 @@
                         </div>
                       </div>
                       <span><?php echo $rowArray['last_name'] ?>
+                          </span>
+                    </div>
+                   </td>
+
+                   <td>
+                   <div class="d-flex align-items-center">
+                      <div class="avatar bg-light-primary me-1">
+                        <div class="avatar-content">
+                          <i data-feather="edit" class="font-medium-3"></i>
+                        </div>
+                      </div>
+                      <span><?php echo $rowArray['course'] ?>
+                          </span>
+                    </div>
+                   </td>
+
+                   <td>
+                   <div class="d-flex align-items-center">
+                      <div class="avatar bg-light-primary me-1">
+                        <div class="avatar-content">
+                          <i data-feather="calendar" class="font-medium-3"></i>
+                        </div>
+                      </div>
+                      <span><?php echo $rowArray['LastTimeAccessed'] ?>
                           </span>
                     </div>
                    </td>
@@ -174,36 +200,36 @@
   <!--checkInterview-->
   <script> 
 
-	$(function () {
-			// for (var i = 1; i < 20; i++) {
-			// 	$('#table').append('<tr class="data"><td>' + i + '</td><td>Some title</td><td>Some Description</td></tr>');
-			// }
+  $(function () {
+      // for (var i = 1; i < 20; i++) {
+      //  $('#table').append('<tr class="data"><td>' + i + '</td><td>Some title</td><td>Some Description</td></tr>');
+      // }
 
-			load = function() {
-				window.tp = new Pagination('#tablePaging', {
-					itemsCount: <?php echo $count ?>,
-					onPageSizeChange: function (ps) {
-						console.log('changed to ' + ps);
-					},
-					onPageChange: function (paging) {
-						//custom paging logic here
-						console.log(paging);
-						var start = paging.pageSize * (paging.currentPage - 1),
-							end = start + paging.pageSize,
-							$rows = $('#table').find('.data');
+      load = function() {
+        window.tp = new Pagination('#tablePaging', {
+          itemsCount: <?php echo $count ?>,
+          onPageSizeChange: function (ps) {
+            console.log('changed to ' + ps);
+          },
+          onPageChange: function (paging) {
+            //custom paging logic here
+            console.log(paging);
+            var start = paging.pageSize * (paging.currentPage - 1),
+              end = start + paging.pageSize,
+              $rows = $('#table').find('.data');
 
-						$rows.hide();
+            $rows.hide();
 
-						for (var i = start; i < end; i++) {
-							$rows.eq(i).show();
-						}
-					}
-				});
-			}
+            for (var i = start; i < end; i++) {
+              $rows.eq(i).show();
+            }
+          }
+        });
+      }
 
-		load();
-	});
-	</script>
+    load();
+  });
+  </script>
   <script>
     $(function(){
         
@@ -216,14 +242,14 @@
      type: "POST",
      url: "<?php echo base_url(); ?>gfa/requestPanel",
      error:function() {$(".requestPanel").html('Error Request');},
-	 beforeSend:function() {$(".requestPanel").html('Requesting...');$('.requestPanel').prop("disabled", true );},
+   beforeSend:function() {$(".requestPanel").html('Requesting...');$('.requestPanel').prop("disabled", true );},
       success: function(data) {
        
-		 $(".requestPanel").html('Request Sent'); 
-	    $('.requestPanel').prop("disabled", true );
-	   
-	  
-	
+     $(".requestPanel").html('Request Sent'); 
+      $('.requestPanel').prop("disabled", true );
+     
+    
+  
        }
       
     });
@@ -238,14 +264,14 @@
      type: "POST",
      url: "<?php echo base_url(); ?>gfa/requestInterview",
      error:function() {$(".requestPanel").html('Error Request');},
-	 beforeSend:function() {$(".requestInterview").html('Requesting...');$('.requestInterview').prop("disabled", true );},
+   beforeSend:function() {$(".requestInterview").html('Requesting...');$('.requestInterview').prop("disabled", true );},
       success: function(data) {
        
-		 $(".requestInterview").html('Request Sent'); 
-	    $('.requestInterview').prop("disabled", true );
-	   
-	  
-	
+     $(".requestInterview").html('Request Sent'); 
+      $('.requestInterview').prop("disabled", true );
+     
+    
+  
        }
       
     });
