@@ -6255,7 +6255,6 @@ $data_connection = array(
 
             $this->gfa_model->wema_course_access($data);
 
-                $logo_url = "<?=base_url('public/assets/images/katsina_logo.png')?>" ;
                 $subject = "Welcome to Your Learning Platform - 30-Day Access Activated";
                 $message = "
                     <!DOCTYPE html>
@@ -6307,7 +6306,7 @@ $data_connection = array(
                     <body>
                     <div class='container'>
                         <header>
-                        <img src='{$logo_url}' alt='Wema | Katsina Logo'>
+                        <img src='https://katsina-learning.remsana.com/portal/public/assets/images/katsina_logo.png' alt='Wema | Katsina Logo' width='300' style='height:auto;'>
                         </header>
                         <div class='content'>
                         <p>Dear {$first_name},</p>
