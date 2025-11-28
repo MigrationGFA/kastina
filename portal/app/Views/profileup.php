@@ -102,7 +102,31 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
 
+    <div id="bottomRightVideoContainer">
+        <iframe 
+            width="100%" height="100%"
+            src="https://www.youtube.com/embed/0D-YGTUuD2E?autoplay=1&mute=1&loop=1&playlist=0D-YGTUuD2E&controls=1&playsinline=1"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    </div>
+
+
 <style>
+#bottomRightVideoContainer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 170px;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    z-index: 9999;
+}
+
 .corporate-logo {
     width: 220px;
     height: 80px;
