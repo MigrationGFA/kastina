@@ -55,6 +55,6 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'katsina-learning'
-          slot-name: 'Production'
+          slot-name: 'test'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_51277342DDB240F0AC2E79B9096816C9 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_75D439255A1D45FBA9F14B4EF16E6EFA }}
