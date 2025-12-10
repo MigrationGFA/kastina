@@ -102,29 +102,65 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
 
-    <div id="bottomRightVideoContainer">
-        <iframe 
-            width="100%" height="100%"
-            src="https://www.youtube.com/embed/0D-YGTUuD2E?autoplay=1&mute=1&loop=1&playlist=0D-YGTUuD2E&controls=1&playsinline=1"
-            frameborder="0"
-            allow="autoplay; encrypted-media"
-            allowfullscreen>
-        </iframe>
+ <!-- Floating Left YouTube Video -->
+<div id="floatingVideo" class="floating-video">
+    <div class="video-header">
+        <button id="closeVideoBtn" class="close-btn">×</button>
     </div>
-
+    <iframe id="ytFrame"
+        width="100%" height="100%"
+        src="https://www.youtube.com/embed/0D-YGTUuD2E?autoplay=1&mute=1&loop=1&playlist=0D-YGTUuD2E&controls=1&playsinline=1"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+    </iframe>
+</div>
 
 <style>
-#bottomRightVideoContainer {
+.floating-video {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    left: 20px; /* LEFT side */
     width: 300px;
     height: 170px;
     background: #000;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-    z-index: 9999;
+    z-index: 99999;
+    cursor: grab;
+}
+
+.floating-video iframe {
+    border-radius: 0 0 12px 12px;
+}
+
+.video-header {
+    width: 100%;
+    height: 25px;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 5px;
+    cursor: grab;
+}
+
+.close-btn {
+    background: #ff4d4d;
+    border: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 22px;
+    text-align: center;
+}
+.close-btn:hover {
+    background: #ff1a1a;
 }
 
 .corporate-logo {
