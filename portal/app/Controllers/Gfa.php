@@ -6225,21 +6225,39 @@ $data_connection = array(
 
     public function learning_wema($first_name = "", $last_name = "", $email = "", $program_type = "")
     {
-        $email = strtolower(urldecode($email));
+        $email    = strtolower(urldecode($email));
         $platform = $program_type;
-        $ref = $email . time();
+        $ref      = $email . time();
 
-        // Save session data
+        // 1. Check user first BEFORE setting session/cookie
+        $existingUser = $this->gfa_model->checkWemaUser($email);
+
+        if ($existingUser) {
+            $created    = strtotime($existingUser['date']);
+            $daysPassed = (time() - $created) / 86400;
+
+            if ($daysPassed > 30) {
+                // Expired — clear everything and redirect
+                session()->destroy();
+                delete_cookie('wema_email');
+                delete_cookie('first_name');
+                delete_cookie('last_name');
+                return redirect()->to('https://katsina.remsana.com');
+            }
+        }
+
+        // 2. Access valid — now set session and cookie
         session()->set([
             'email'        => $email,
             'account_type' => 'startup',
             'wema_email'   => $email,
             'first_name'   => $first_name,
-            'last_name'   => $last_name,
+            'last_name'    => $last_name,
         ]);
 
-        // Check if user already exists
-        $existingUser = $this->gfa_model->checkWemaUser($email);
+        set_cookie('wema_email', $email, 2592000);
+        set_cookie('first_name', $first_name, 2592000);
+        set_cookie('last_name',  $last_name,  2592000);
 
         if (!$existingUser) {
             // User does NOT exist → insert
@@ -6378,34 +6396,65 @@ $data_connection = array(
     }
     
 
+    // public function dashboard()
+    // {
+    //     $emailVerifySession  = session()->get('email') ;
+        
+    //     //$checkRegisteredAccount = $this->gfa_model->getStartUpDetails($emailVerifySession) ;
+    //     // $cohort = $this->gfa_model->getCohortDetails($emailVerifySession);
+    //     $category = $this->gfa_model->getWemaCategoryDetails($emailVerifySession);
+    //     // $courseTrack = $this->gfa_model->GetUserProgressSoftSkills($emailVerifySession);
+        
+    //     // $checkValidBVNandNIN =  [['val' => 1]];
+    //     // $checkValidBVNandNIN = $this->gfa_model->CheckUserBVNandNIN($emailVerifySession);
+    //     $checkMiss = $this->gfa_model->CheckMissingFieldsByWemaUid($emailVerifySession);
+
+    //    if(!empty($emailVerifySession)){
+    //     if(count($checkMiss) > 0){
+    //     		return redirect()->to(base_url('gfa/profileup')); 
+    //     	} else {
+    //             if ($category === 'DIMP Skill' || $category === '' || is_null($category)) {
+    //      		    return redirect()->to(base_url('gfa/dimp_skills')); 
+    //             } else {
+    //                 return redirect()->to(base_url('gfa/learning_path'));
+    //             }
+    //         }
+    //     } else{
+    //         return redirect()->to(base_url('gfa/login'));
+    //     }
+        
+    // }
+
     public function dashboard()
     {
-        $emailVerifySession  = session()->get('email') ;
-// var_dump($emailVerifySession);
-        //$checkRegisteredAccount = $this->gfa_model->getStartUpDetails($emailVerifySession) ;
-        // $cohort = $this->gfa_model->getCohortDetails($emailVerifySession);
-        $category = $this->gfa_model->getWemaCategoryDetails($emailVerifySession);
-        // $courseTrack = $this->gfa_model->GetUserProgressSoftSkills($emailVerifySession);
-        
-        // $checkValidBVNandNIN =  [['val' => 1]];
-        // $checkValidBVNandNIN = $this->gfa_model->CheckUserBVNandNIN($emailVerifySession);
-        $checkMiss = $this->gfa_model->CheckMissingFieldsByWemaUid($emailVerifySession);
-// var_dump($checkMiss);
+        // If session expired, restore from cookie
+        if (!session()->get('email') && get_cookie('wema_email')) {
+            session()->set([
+                'email'        => get_cookie('wema_email'),
+                'first_name'   => get_cookie('first_name'),
+                'account_type' => 'startup',
+                'wema_email'   => get_cookie('wema_email'),
+                'last_name'    => get_cookie('last_name'),
+            ]);
+        }
 
-       if(!empty($emailVerifySession)){
-        if(count($checkMiss) > 0){
-        		return redirect()->to(base_url('gfa/profileup')); 
-        	} else {
+        $emailVerifySession = session()->get('email');
+        $category           = $this->gfa_model->getWemaCategoryDetails($emailVerifySession);
+        $checkMiss          = $this->gfa_model->CheckMissingFieldsByWemaUid($emailVerifySession);
+
+        if (!empty($emailVerifySession)) {
+            if (count($checkMiss) > 0) {
+                return redirect()->to(base_url('gfa/profileup'));
+            } else {
                 if ($category === 'DIMP Skill' || $category === '' || is_null($category)) {
-         		    return redirect()->to(base_url('gfa/dimp_skills')); 
+                    return redirect()->to(base_url('gfa/dimp_skills'));
                 } else {
                     return redirect()->to(base_url('gfa/learning_path'));
                 }
             }
-        } else{
+        } else {
             return redirect()->to(base_url('gfa/login'));
         }
-        
     }
 
 
@@ -8269,6 +8318,11 @@ public function signoutAction()
         }
     }
     session()->destroy(); 
+    
+    // Clear cookies
+    delete_cookie('wema_email');
+    delete_cookie('first_name');
+    delete_cookie('last_name');
 
     return redirect()->to("https://katsina.remsana.com/");
 }
