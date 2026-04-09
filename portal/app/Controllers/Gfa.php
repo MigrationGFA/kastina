@@ -6434,7 +6434,6 @@ $data_connection = array(
         $refCodekatsina = "KATSINA/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
         $getCertificateCourse = $this->gfa_model->getCertificateWemaCourse($email); 
 
-
         if(empty($getCertificateCourse)){
         $getCerticateData = $this->gfa_model->GetCertificateEligibleAssignedCourseWema($email);
         $course_id = $this->gfa_model->getCourseIdByUserEmail($email);
