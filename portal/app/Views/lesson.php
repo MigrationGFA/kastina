@@ -1,3 +1,6 @@
+<!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YcnS/1HiOGxmFkaQKntCbLRAeCAug9GJhYNu" crossorigin="anonymous">
+
 <?php 
   $this->gfa_model = model('App\Models\GfaModel');
   $this->admin_model = model('App\Models\AdminModel');
@@ -72,14 +75,30 @@ if ($position !== false) {
                
               
         <div class="card-body">
-            <h5>Lesson Details</h5>
+            <!-- <h5>Lesson Details</h5>
           <div class="me-2" style="text-align: justify; height: 100%; overflow: auto;">
             <?php
-              $searchData = array('<div class="ql-editor" data-gramm="false" contenteditable="true">', '<input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL">','<input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL" placeholder="Embed URL">');
-              $replaceData = array("<div>", "<br/>");
-              echo html_entity_decode(str_replace($searchData,$replaceData,stripslashes($this->gfa_model->getCourseDataByRef($getLessonData[0]['ref_id'])[0]['data'])), ENT_QUOTES); 
-            ?>
-          </div>
+              // $searchData = array('<div class="ql-editor" data-gramm="false" contenteditable="true">', '<input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL">','<input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL" placeholder="Embed URL">');
+              // $replaceData = array("<div>", "<br/>");
+              // echo html_entity_decode(str_replace($searchData,$replaceData,stripslashes($this->gfa_model->getCourseDataByRef($getLessonData[0]['ref_id'])[0]['data'])), ENT_QUOTES); 
+            ?> -->
+            <h5>Lesson Details</h5>
+<div class="me-2 w-100 h-auto overflow-visible lesson-content">
+    <?php
+        $searchData = array(
+            '<div class="ql-editor" data-gramm="false" contenteditable="true">',
+            '<input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL">',
+            '<input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL" placeholder="Embed URL">'
+        );
+        $replaceData = array("<div>", "<br/>", "");
+        echo html_entity_decode(
+            str_replace($searchData, $replaceData,
+            stripslashes($this->gfa_model->getCourseDataByRef($getLessonData[0]['ref_id'])[0]['data'])),
+            ENT_QUOTES
+        );
+    ?>
+</div>
+          <!-- </div> -->
           <div class="gap-6 col-lg-6 " style="margin-top: 30px;">
             <!--<div class="demo-inline-spacing mb-2 gap-6">-->
             <?php
@@ -291,6 +310,47 @@ if ($position !== false) {
 </div>
 
 <style>
+  /* Target Vimeo iframes and make them responsive */
+/* Responsive Vimeo Wrapper */
+/* Only CSS needed */
+.lesson-content {
+    text-align: justify;
+    word-wrap: break-word;
+}
+
+.lesson-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.vimeo-responsive-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    background: #000;
+    margin: 10px 0;
+    border-radius: 8px;
+}
+
+.vimeo-responsive-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Mobile Fix */
+@media (max-width: 768px) {
+    .vimeo-responsive-wrapper {
+        padding-bottom: 56.25%;
+        width: 100%;
+    }
+}
+
   /* .toggle-container {
     display: flex;
     justify-content: space-between;
@@ -314,6 +374,36 @@ if ($position !== false) {
 
 <script>
 $(function() {
+
+// document.addEventListener('DOMContentLoaded', function() {
+    // Find all Vimeo iframes
+     const vimeoIframes = document.querySelectorAll('iframe[src*="player.vimeo"]');
+
+    vimeoIframes.forEach(function (iframe) {
+
+        // Remove any inline width/height that Quill may have added
+        iframe.removeAttribute('width');
+        iframe.removeAttribute('height');
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.position = 'absolute';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.border = '0';
+
+        // Only wrap if not already wrapped
+        if (!iframe.parentNode.classList.contains('vimeo-responsive-wrapper')) {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('vimeo-responsive-wrapper');
+
+            iframe.parentNode.insertBefore(wrapper, iframe);
+            wrapper.appendChild(iframe);
+        }
+    });
+// });
+
+
+
   const commentsToggle = document.getElementById('comments-toggle');
     const repliesToggle = document.getElementById('replies-toggle');
     const commentsSection = document.querySelector('.comments-section');
@@ -392,3 +482,7 @@ $(function() {
 </script>
 
 </div>
+
+
+<!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

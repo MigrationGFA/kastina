@@ -79,7 +79,7 @@
                           <i data-feather="box" class="font-medium-3"></i>
                         </div>
                       </div>
-                      <span><?php echo $rowArray['first_name'] ?>
+                      <span><?php echo $rowArray['last_name'] ?>
                           </span>
                     </div>
                    </td>
@@ -91,7 +91,7 @@
                           <i data-feather="box" class="font-medium-3"></i>
                         </div>
                       </div>
-                      <span><?php echo $rowArray['last_name'] ?>
+                      <span><?php echo $rowArray['first_name'] ?>
                           </span>
                     </div>
                    </td>

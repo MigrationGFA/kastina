@@ -22,6 +22,8 @@ class Gfa extends BaseController {
         $this->admin_model = model('App\Models\AdminModel');
         $this->chat_model = model('App\Models\ChatModel');
         $this->encrypt = \Config\Services::encrypter();
+
+        helper('cookie');
         // $emailVerifySession  = session()->get('email') ;
 
         // if (!empty($emailVerifySession)) {
@@ -1563,6 +1565,25 @@ public function lesson_progress($course="")
 
     }
 
+public function quiz_progress($course="")
+
+    {
+        
+        $email  = session()->get('email') ;
+        if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
+        $title['page_title'] = "Quiz Progress smedan";
+        $data['email'] =  $email;
+        $data['login_type'] = session()->get('login_type') ;
+        $data['account_type'] = session()->get('account_type') ;
+        
+        $data['course'] = urldecode($course);
+        echo view('header-assets-new',$title);
+        echo view('menu-assets-new',$data);
+        echo view('navbar-assets-new',$data);
+        echo view('quiz_progress', $data);
+        echo view('footer-assets-new',$data); 
+
+    }
 
 
 public function edit_lessonpostpro_ext(){
@@ -2752,7 +2773,7 @@ public function group_members_api()
 		'Digital Marketing' => ['2020-01-01'],
 		'Digital Finance and Accounting' => ['2020-01-01'],
 		'Operations and Supply Chain Digitization' => ['2020-01-01'],
-		'Understanding Organization Culture &amp; Change Management' => ['2020-01-01'],
+		'Understanding Organization Culture & Change Management' => ['2020-01-01'],
     	];
 
 // Update dates dynamically
@@ -2839,6 +2860,7 @@ $data['courseArrayUpcoming'] = $courseArrayUpcoming;
         $course = $this->request->getPost("course");
         $course_type = $course;
         if ($course == "DIMP Skill"){
+            $course = "SME Courses";
             $course_type = "DIMP Skill";
         }
         // $course = $this->request->getPost("course");
@@ -6352,6 +6374,7 @@ $data_connection = array(
                 $this->sendMail($email, $message, $subject);        
             }
 
+        $this->saveUserActivity('signinAction', $email);
         return redirect()->to('https://katsina-learning.remsana.com/portal/gfa/dashboard');
     }
 
@@ -7149,7 +7172,7 @@ public function export_access_dashboard()
                             $csvRow = array(
                                 $n++,
                                 $row['last_name']." ".$row['first_name'],
-                                $row['course_type'],
+                                $row['course'],
                                 $row['LastTimeAccessed']
                                 
                                 
@@ -9609,7 +9632,7 @@ $data['eventResp'] = json_decode($resp,true);
 			'UserIp' => $ip_address,
 			'UserId' => '',
 			'UserEmail' => $email,
-			'AppType' => "Fgnalat App",
+			'AppType' => "Katsina Wema",
 			'DateCreated' => $final_date_time
 		];
 
