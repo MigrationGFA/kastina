@@ -7166,7 +7166,7 @@ public function export_access_dashboard()
                 // Write the CSV header
                 fputcsv($output, $csvHeader);
                         $n =1 ;
-                        $rowArray  = $this->gfa_model->ExportWemaEkitiLoggedIn('KATSINA ALAT');
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiLoggedIn('Katsina Wema');
                         foreach ($rowArray as $row) {
                        
                             $csvRow = array(
@@ -7225,7 +7225,7 @@ public function export_started_learnining()
                 // Write the CSV header
                 fputcsv($output, $csvHeader);
                         $n =1 ;
-                        $rowArray  = $this->gfa_model->ExportWemaEkitiStartedLearning('KATSINA ALAT');
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiStartedLearning('Katsina Wema');
                         foreach ($rowArray as $row) {
                        
                             $csvRow = array(
@@ -7285,7 +7285,7 @@ public function export_completed_at_least_a_course()
                 // Write the CSV header
                 fputcsv($output, $csvHeader);
                         $n =1 ;
-                        $rowArray  = $this->gfa_model->ExportWemaEkitiCompletedAtLeastACourse('KATSINA ALAT');
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiCompletedAtLeastACourse('Katsina Wema');
                         foreach ($rowArray as $row) {
                        
                             $csvRow = array(
@@ -7345,7 +7345,7 @@ public function export_completed_assigned_course()
                 // Write the CSV header
                 fputcsv($output, $csvHeader);
                         $n =1 ;
-                        $rowArray  = $this->gfa_model->ExportWemaEkitiCompletedCoursePassedQuiz('KATSINA ALAT');
+                        $rowArray  = $this->gfa_model->ExportWemaEkitiCompletedCoursePassedQuiz('Katsina Wema');
                         foreach ($rowArray as $row) {
                        
                             $csvRow = array(
