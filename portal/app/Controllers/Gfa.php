@@ -1571,7 +1571,7 @@ public function quiz_progress($course="")
         
         $email  = session()->get('email') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
-        $title['page_title'] = "Quiz Progress smedan";
+        $title['page_title'] = "Quiz Progress katsina";
         $data['email'] =  $email;
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = session()->get('account_type') ;
@@ -3402,56 +3402,157 @@ public function profileup()
 
 
     
+    // public function soft_skills()
+    // {
+        
+    //     $email  = session()->get('email') ;
+    //     if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
+    //     $title['page_title'] = "GFA TECH Soft Skills Learning";
+    //     $data['email'] =  $email;
+    //     $data['getPhoto']  =  $this->gfa_model->getPhotoUploaded($email);
+    //     $coursetitleArray = [
+    //     'Time Management' => ['2024-10-21'],
+    //     'Business Writing & Communication' => ['2024-10-22'],
+    //     'Critical Thinking' => ['2024-10-23'],
+    //     'People Management Skills in the Workplace' =>['2024-10-24'],
+    //     'Work Ethics' =>['2024-10-25'],        
+    //     'Emotional Intelligence' => ['2024-10-26'],
+	// 	'Sales and Negotiations Skills' => ['2024-10-27'],
+	// 	'Ideas to business' => ['2024-10-28'],
+	// 	'Customer Value' => ['2024-10-28'],
+	// 	'Stakeholder Management' => ['2024-10-29'],
+	// 	'Culture' => ['2024-10-30'],
+	// 	'Personal Branding & Effectiveness' => ['2024-10-31'],
+	// 	'Effective Presentation Skills' => ['2024-11-01'],
+	// 	'Conflict Management' => ['2024-11-02'],
+	// 	'CV-Workshop' => ['2024-11-03']        
+    // 	];
+    // 	$main_cat = "soft skill";
+    // 	$courseArrayUpcoming = $this->gfa_model->getCoursesByMainCategoryUpcoming($main_cat, $coursetitleArray);
+    //     if (is_array($courseArrayUpcoming)) {
+    //             usort($courseArrayUpcoming, function($a, $b) use ($coursetitleArray) {
+    //                 $dateA = $coursetitleArray[$a['coursetitle']][0] ?? '2024-12-07';
+    //                 $dateB = $coursetitleArray[$b['coursetitle']][0] ?? '2024-12-07';
+            
+    //                 return strtotime($dateA) - strtotime($dateB);
+    //             });
+    //     }
+	//     $data['courseArrayUpcoming'] = $courseArrayUpcoming;
+    // 	$data['courseArrayToday'] = $this->gfa_model->getCoursesByMainCategoryToday($main_cat, $coursetitleArray);
+    // 	$data['courseArrayNext'] = $this->gfa_model->getCoursesByMainCategoryNextDay($main_cat, $coursetitleArray);
+    // 	$data['courseArrayPrev'] =$this->gfa_model->getCoursesByMainCategoryPrevious($main_cat, $coursetitleArray);
+    // 	$data['StartupArray'] = $this->gfa_model->getStartUpDetails($email);
+    // 	$data['skillArray'] = $this->gfa_model->getUserAccountExt($email);
+    // 	$data['login_type'] = session()->get('login_type');
+    // 	$data['coursetitleArray'] = $coursetitleArray;
+    // 	$data['account_type'] = session()->get('account_type');
+    //     echo view('header-assets-new',$title);
+    //     echo view('menu-assets-new',$data);
+    //     echo view('navbar-assets-new',$data);
+    //     echo view('soft_skills', $data);
+    //     echo view('footer-assets-new',$data);  
+ 
+    // }
+
+
     public function soft_skills()
     {
-        
-        $email  = session()->get('email') ;
-        if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
-        $title['page_title'] = "GFA TECH Soft Skills Learning";
-        $data['email'] =  $email;
-        $data['getPhoto']  =  $this->gfa_model->getPhotoUploaded($email);
-        $coursetitleArray = [
-        'Time Management' => ['2024-10-21'],
-        'Business Writing & Communication' => ['2024-10-22'],
-        'Critical Thinking' => ['2024-10-23'],
-        'People Management Skills in the Workplace' =>['2024-10-24'],
-        'Work Ethics' =>['2024-10-25'],        
-        'Emotional Intelligence' => ['2024-10-26'],
-		'Sales and Negotiations Skills' => ['2024-10-27'],
-		'Ideas to business' => ['2024-10-28'],
-		'Customer Value' => ['2024-10-28'],
-		'Stakeholder Management' => ['2024-10-29'],
-		'Culture' => ['2024-10-30'],
-		'Personal Branding & Effectiveness' => ['2024-10-31'],
-		'Effective Presentation Skills' => ['2024-11-01'],
-		'Conflict Management' => ['2024-11-02'],
-		'CV-Workshop' => ['2024-11-03']        
-    	];
-    	$main_cat = "soft skill";
-    	$courseArrayUpcoming = $this->gfa_model->getCoursesByMainCategoryUpcoming($main_cat, $coursetitleArray);
-if (is_array($courseArrayUpcoming)) {
-		usort($courseArrayUpcoming, function($a, $b) use ($coursetitleArray) {
-    		$dateA = $coursetitleArray[$a['coursetitle']][0] ?? '2024-12-07';
-    		$dateB = $coursetitleArray[$b['coursetitle']][0] ?? '2024-12-07';
-    
-    		return strtotime($dateA) - strtotime($dateB);
-		});
-}
-	$data['courseArrayUpcoming'] = $courseArrayUpcoming;
-    	$data['courseArrayToday'] = $this->gfa_model->getCoursesByMainCategoryToday($main_cat, $coursetitleArray);
-    	$data['courseArrayNext'] = $this->gfa_model->getCoursesByMainCategoryNextDay($main_cat, $coursetitleArray);
-    	$data['courseArrayPrev'] =$this->gfa_model->getCoursesByMainCategoryPrevious($main_cat, $coursetitleArray);
-    	$data['StartupArray'] = $this->gfa_model->getStartUpDetails($email);
-    	$data['skillArray'] = $this->gfa_model->getUserAccountExt($email);
-    	$data['login_type'] = session()->get('login_type');
-    	$data['coursetitleArray'] = $coursetitleArray;
-    	$data['account_type'] = session()->get('account_type');
-        echo view('header-assets-new',$title);
-        echo view('menu-assets-new',$data);
-        echo view('navbar-assets-new',$data);
+        $email = session()->get('email');
+        if ($email == '') {
+            return redirect()->to(base_url('gfa/login'));
+        }
+
+        $title['page_title'] = "Learning Portal";
+        $data['email'] = $email;
+
+        // Get user category from DB
+        $emailVerifySession = $email;
+        $category = $this->gfa_model->getWemaCategoryDetails($emailVerifySession);
+        $category = trim($category); // clean extra spaces
+
+        // Category → Courses Mapping
+        $categoryCourses = [
+
+            'PERSONAL EFFECTIVENESS & SELF-LEADERSHIP' => [
+                'Emotional Intelligence',
+                'Time Management',
+                'Personal Branding &amp; Effectiveness',
+                'Critical Thinking'
+            ],
+
+            'COMMUNICATION & PROFESSIONAL EXPRESSION' => [
+                'Business Writing &amp; Communication',
+                'Effective Presentation Skills',
+                'CV-Workshop'
+            ],
+
+            'RELATIONSHIP & PEOPLE MANAGEMENT' => [
+                'Stakeholder Management',
+                'People Management Skills in the Workplace',
+                'Conflict Management',
+                'Sales and Negotiations Skills'
+            ],
+
+            'BUSINESS THINKING & VALUE CREATION' => [
+                'Ideas to business',
+                'Customer Value'
+            ],
+
+            'ORGANIZATIONAL CULTURE & PROFESSIONAL CONDUCT' => [
+                'Culture',
+                'Work Ethics'
+            ]
+        ];
+
+        // Fallback if category is invalid
+        if (!isset($categoryCourses[$category])) {
+            $category = 'PERSONAL EFFECTIVENESS & SELF-LEADERSHIP';
+        }
+
+        // Build course title array dynamically
+        $coursetitleArray = [];
+        foreach ($categoryCourses[$category] as $course) {
+            $coursetitleArray[$course] = ['2026-01-01'];
+        }
+
+        $main_cat = "soft skill";
+
+        // Upcoming courses
+        $courseArrayUpcoming = $this->gfa_model
+            ->getCoursesByMainCategoryUpcoming($main_cat, $coursetitleArray);
+
+        if (is_array($courseArrayUpcoming)) {
+            usort($courseArrayUpcoming, function ($a, $b) use ($coursetitleArray) {
+                $dateA = $coursetitleArray[$a['coursetitle']][0] ?? '2024-12-07';
+                $dateB = $coursetitleArray[$b['coursetitle']][0] ?? '2024-12-07';
+                return strtotime($dateA) - strtotime($dateB);
+            });
+        }
+
+        $data['courseArrayUpcoming'] = $courseArrayUpcoming;
+
+        // Other course groupings
+        $data['courseArrayToday'] = $this->gfa_model->getCoursesByMainCategoryToday($main_cat, $coursetitleArray);
+
+        $data['courseArrayNext'] = $this->gfa_model->getCoursesByMainCategoryNextDay($main_cat, $coursetitleArray);
+
+        $data['courseArrayPrev'] = $this->gfa_model->getCoursesByMainCategoryPrevious($main_cat, $coursetitleArray);
+
+        // Other data
+        $data['StartupArray'] = $this->gfa_model->getStartUpDetails($email);
+        $data['skillArray'] = $this->gfa_model->getUserAccountExt($email);
+        $data['login_type'] = session()->get('login_type');
+        $data['account_type'] = session()->get('account_type');
+
+        $data['coursetitleArray'] = $coursetitleArray;
+        $data['selectedCategory'] = $category;
+
+        // Views
+        echo view('header-assets-new', $title);
+        echo view('menu-assets-new', $data);
+        echo view('navbar-assets-new', $data);
         echo view('soft_skills', $data);
-        echo view('footer-assets-new',$data);  
- 
+        echo view('footer-assets-new', $data);
     }
 
 
@@ -6357,7 +6458,7 @@ $data_connection = array(
                     <ul>
                     <li>After login, you will be prompted to <strong>select your preferred course</strong>. Please choose carefully—this will be the only course you can access and the one your certificate will be issued for.</li>
                     <li>Your dashboard includes a <strong>progress tracker</strong> to monitor your learning journey.</li>
-                    <li>To earn your certificate, you must achieve at least <strong>80% in all assessments</strong> and <strong>80% overall course completion</strong>.</li>
+                    <li>To earn your certificate, you must achieve at least <strong>80% overall course completion and attempt all quiz</strong>.</li>
                     </ul>
 
                     <p>We wish you a successful and enjoyable learning experience.</p>
@@ -6462,18 +6563,18 @@ $data_connection = array(
         }
 
         $emailVerifySession = session()->get('email');
-        $category           = $this->gfa_model->getWemaCategoryDetails($emailVerifySession);
+        // $category           = $this->gfa_model->getWemaCategoryDetails($emailVerifySession);
         $checkMiss          = $this->gfa_model->CheckMissingFieldsByWemaUid($emailVerifySession);
 
         if (!empty($emailVerifySession)) {
             if (count($checkMiss) > 0) {
                 return redirect()->to(base_url('gfa/profileup'));
             } else {
-                if ($category === 'DIMP Skill' || $category === '' || is_null($category)) {
-                    return redirect()->to(base_url('gfa/dimp_skills'));
-                } else {
-                    return redirect()->to(base_url('gfa/learning_path'));
-                }
+                // if ($category === 'DIMP Skill' || $category === '' || is_null($category)) {
+                //     return redirect()->to(base_url('gfa/dimp_skills'));
+                // } else {
+                    return redirect()->to(base_url('gfa/soft_skills'));
+                // }
             }
         } else {
             return redirect()->to(base_url('gfa/login'));
@@ -6545,6 +6646,8 @@ $data_connection = array(
 
     public function certificate_gen(){
         $email  = session()->get('email') ;
+        $first_name  = session()->get('first_name') ;
+        $last_name  = session()->get('last_name') ;
         // $getCerticateData = $this->gfa_model->GetCertificateEligibleSoftSkills($email);
         // print_r($getCerticateData);
         // exit;
@@ -6566,23 +6669,16 @@ $data_connection = array(
         $currentMonth = date('m');
         $currentDay = date('d');
         $time_submit = date("Y-m-d H:i:s", time());
-        //$cert_type = array("kaduna-course","kaduna-soft");
+        
         // Combine the parts to form the reference code
         $refCodeKATSINA = "KATSINA/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
         $getCertificateCourse = $this->gfa_model->getCertificateEmailSoft($email); 
 
         if(empty($getCertificateCourse)){
-        $getCerticateData1 = $this->gfa_model->GetCertificateEligibleSoftSkills($email);
-        $getCerticateData2 = $this->gfa_model->GetQuizCertificateEligibleSoftSkills($email);
-        
-if (trim($getCerticateData1[0]['Score']) >= trim($getCerticateData2[0]['Score'])) {
-	$getCerticateData = $this->gfa_model->GetCertificateEligibleSoftSkills($email);
-} else {
-	$getCerticateData = $this->gfa_model->GetQuizCertificateEligibleSoftSkills($email);
-}
-        if(trim($getCerticateData[0]['Score']) >=80){
-
-            
+             $getCerticateData = $this->gfa_model->GetUserProgressSoftCurriculumWema($email);
+        // $getCerticateData = $this->gfa_model->GetCertificateEligibleNewCurriculumWema($email);
+        $getCerticateDataProgress = $this->gfa_model->checkOverallCompletion($email);
+        if($getCerticateDataProgress){
             $data = array(
                 'email' => $email,
                 'ref' => $random_2,
@@ -6590,15 +6686,15 @@ if (trim($getCerticateData1[0]['Score']) >= trim($getCerticateData2[0]['Score'])
                 'cert_type' => "katsina-soft",
                 'time_submit' => $time_submit,
                 'status' => "active",
-                'course' => $getCerticateData[0]['courses'],
-                'score' => $getCerticateData[0]['Score'],
-                'name'=>$getCerticateData[0]['FullName']
+                'course' => 'SME Digitization',
+                'score' => $getCerticateData[0]['Progress'],
+                'name'=>$first_name . ' '. $last_name
                 ) ;
             $this->gfa_model->insertCertificate($data); 
             session()->set('cert_soft_ref', $random_2); 
             return redirect()->to(base_url("gfa/certificate_soft_skills/{$random_2}"));
         }else{
-        return redirect()->to(base_url("gfa/certificate_not_eligible/soft"));
+            return redirect()->to(base_url("gfa/certificate_not_eligible/soft"));
         }
         
         }else{
@@ -6607,6 +6703,71 @@ if (trim($getCerticateData1[0]['Score']) >= trim($getCerticateData2[0]['Score'])
         }
 
     }
+
+//     public function certificate_gen(){
+//         $email  = session()->get('email') ;
+//         // $getCerticateData = $this->gfa_model->GetCertificateEligibleSoftSkills($email);
+//         // print_r($getCerticateData);
+//         // exit;
+//         // Generate a random number between 1000 and 10000
+//         $random_1 = time();
+//         $random_2 = time() . rand(1000, 9999);
+
+//         // Extract first 3 digits of random_1
+//         $first_34_digits = substr($random_1, 0, 4);
+
+//         // Extract last 4 digits of random_2
+//         $last_4_digits = substr($random_2, -4);
+
+//         // Combine both to generate $random
+//         $randomNumber = $first_34_digits . $last_4_digits;
+
+//         // Get the current year, month, and day
+//         $currentYear = date('Y');
+//         $currentMonth = date('m');
+//         $currentDay = date('d');
+//         $time_submit = date("Y-m-d H:i:s", time());
+//         //$cert_type = array("kaduna-course","kaduna-soft");
+//         // Combine the parts to form the reference code
+//         $refCodeKATSINA = "KATSINA/{$currentYear}/{$currentMonth}/{$currentDay}/{$randomNumber}";
+//         $getCertificateCourse = $this->gfa_model->getCertificateEmailSoft($email); 
+
+//         if(empty($getCertificateCourse)){
+//         $getCerticateData1 = $this->gfa_model->GetCertificateEligibleSoftSkills($email);
+//         $getCerticateData2 = $this->gfa_model->GetQuizCertificateEligibleSoftSkills($email);
+        
+// if (trim($getCerticateData1[0]['Score']) >= trim($getCerticateData2[0]['Score'])) {
+// 	$getCerticateData = $this->gfa_model->GetCertificateEligibleSoftSkills($email);
+// } else {
+// 	$getCerticateData = $this->gfa_model->GetQuizCertificateEligibleSoftSkills($email);
+// }
+//         if(trim($getCerticateData[0]['Score']) >=80){
+
+            
+//             $data = array(
+//                 'email' => $email,
+//                 'ref' => $random_2,
+//                 'prog' => $refCodeKATSINA,
+//                 'cert_type' => "katsina-soft",
+//                 'time_submit' => $time_submit,
+//                 'status' => "active",
+//                 'course' => $getCerticateData[0]['courses'],
+//                 'score' => $getCerticateData[0]['Score'],
+//                 'name'=>$getCerticateData[0]['FullName']
+//                 ) ;
+//             $this->gfa_model->insertCertificate($data); 
+//             session()->set('cert_soft_ref', $random_2); 
+//             return redirect()->to(base_url("gfa/certificate_soft_skills/{$random_2}"));
+//         }else{
+//         return redirect()->to(base_url("gfa/certificate_not_eligible/soft"));
+//         }
+        
+//         }else{
+//             $cert_ref = $getCertificateCourse[0]['ref']; 
+//             return redirect()->to(base_url("gfa/certificate_soft_skills/{$cert_ref}"));
+//         }
+
+//     }
 
     
     public function certificate_gen_dimp(){
