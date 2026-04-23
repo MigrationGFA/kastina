@@ -1,7 +1,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<?php
+<?php 
   $this->gfa_model = model('App\Models\GfaModel');
   $this->admin_model = model('App\Models\AdminModel');
 ?>
@@ -62,14 +62,11 @@
                                         <label class="form-label fw-semibold text-dark">Select your most preferred course</label>
                                         <div class="input-group input-group-merge">
                                             <select name="course" class="form-select corporate-select" required>
-                                                <option value="DIMP Skill">SME courses</option>
-                                                <option value="CRM Management">CRM Management</option>
-                                                <option value="Accounting Software">Accounting Software</option>
-                                                <option value="Career Advancement">Career Advancement</option>
-                                                <option value="System Analysis">System Analysis</option>
-                                                <option value="Technical Writing">Technical Writing</option>
-                                                <option value="Cloud Computing">Cloud Computing</option>
-                                                <option value="Web Design">Web Design</option>
+                                                <option value="PERSONAL EFFECTIVENESS & SELF-LEADERSHIP">PERSONAL EFFECTIVENESS & SELF-LEADERSHIP</option>
+                                                <option value="COMMUNICATION & PROFESSIONAL EXPRESSION">COMMUNICATION & PROFESSIONAL EXPRESSION</option>
+                                                <option value="RELATIONSHIP & PEOPLE MANAGEMENT">RELATIONSHIP & PEOPLE MANAGEMENT</option>
+                                                <option value="BUSINESS THINKING & VALUE CREATION">BUSINESS THINKING & VALUE CREATION</option>
+                                                <option value="ORGANIZATIONAL CULTURE & PROFESSIONAL CONDUCT">ORGANIZATIONAL CULTURE & PROFESSIONAL CONDUCT</option>
                                             </select>
                                         </div>
                                     </div>
@@ -105,19 +102,20 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
 
- <!-- Floating Left YouTube Video -->
+    <!-- Floating Left YouTube Video -->
 <div id="floatingVideo" class="floating-video">
     <div class="video-header">
         <button id="closeVideoBtn" class="close-btn">×</button>
     </div>
     <iframe id="ytFrame"
         width="100%" height="100%"
-        src="https://www.youtube.com/embed/0D-YGTUuD2E?autoplay=1&mute=1&loop=1&playlist=0D-YGTUuD2E&controls=1&playsinline=1"
+        src="https://www.youtube.com/embed/oXv4Gn8r_e8?autoplay=1&mute=1&loop=1&playlist=oXv4Gn8r_e8&controls=1&playsinline=1"
         frameborder="0"
         allow="autoplay; encrypted-media"
         allowfullscreen>
     </iframe>
 </div>
+
 
 <!-- Info Modal -->
 <div class="modal fade" id="infoModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -139,7 +137,7 @@
         <ul>
           <li>Track your progress from your dashboard</li>
           <li>Learning is flexible - set daily reminders to stay on track</li>
-          <li>Minimum <strong>80% score</strong> and <strong>80% completion</strong> required</li>
+          <li>Minimum <strong>80% completion</strong> required</li>
         </ul>
 
         <p>We wish you a successful learning experience.</p>
@@ -158,6 +156,7 @@
     /* .modal-open .floating-video {
         pointer-events: none;
     } */
+
     .floating-video {
         position: fixed;
         bottom: 20px;
@@ -254,6 +253,35 @@
       modal.hide();
     });
   });
+</script>
+
+<script>
+// ---------- DRAGGABLE VIDEO ----------
+const video = document.getElementById("floatingVideo");
+let offsetX, offsetY, isDown = false;
+
+video.addEventListener("mousedown", function(e) {
+    isDown = true;
+    offsetX = e.clientX - video.offsetLeft;
+    offsetY = e.clientY - video.offsetTop;
+    video.style.cursor = "grabbing";
+});
+
+document.addEventListener("mouseup", function() {
+    isDown = false;
+    video.style.cursor = "grab";
+});
+
+document.addEventListener("mousemove", function(e) {
+    if (!isDown) return;
+    video.style.left = (e.clientX - offsetX) + "px";
+    video.style.top = (e.clientY - offsetY) + "px";
+});
+
+// ---------- CLOSE BUTTON ----------
+document.getElementById("closeVideoBtn").onclick = () => {
+    video.style.display = "none";
+};
 </script>
 
 <script>

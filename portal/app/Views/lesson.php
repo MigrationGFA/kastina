@@ -147,7 +147,7 @@ if ($position !== false) {
             </div>
             <div class="d-flex flex-column">
               <span class="fw-medium">Admin</span>
-              <small class="text-muted">GFA </small> 
+              <!-- <small class="text-muted">GFA </small>  -->
             </div>
           </div>
         </div>
