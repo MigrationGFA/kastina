@@ -1,6 +1,7 @@
 <?php 
   $this->gfa_model = model('App\Models\GfaModel');
   $email = session()->get('email');
+  $course = $this->gfa_model->getWemaCategoryDetails($email);
 ?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -23,7 +24,7 @@
           <ul class="ps-3 g-2 my-3">
 
             <?php 
-              $PassedQuizzesData = $this->gfa_model->GetPassedQuizzes($email, $course);
+              $PassedQuizzesData = $this->gfa_model->GetPassedSoftQuizzes($email, $course);
               foreach($PassedQuizzesData as $quiz){ 
             ?>
 
@@ -51,7 +52,7 @@
         <ul class="ps-3 g-2 my-3">
 
           <?php 
-            $UnpassedQuizzesData = $this->gfa_model->GetUnpassedQuizzes($email, $course);
+            $UnpassedQuizzesData = $this->gfa_model->GetUnpassedSoftQuizzes($email, $course);
             foreach($UnpassedQuizzesData as $quiz){ 
           ?>
 

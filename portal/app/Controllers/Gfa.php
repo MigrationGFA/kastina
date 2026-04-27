@@ -2858,13 +2858,7 @@ $data['courseArrayUpcoming'] = $courseArrayUpcoming;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
         
         $course = $this->request->getPost("course");
-        $course_type = $course;
-        if ($course == "DIMP Skill"){
-            $course = "SME Courses";
-            $course_type = "DIMP Skill";
-        }
-        // $course = $this->request->getPost("course");
-        // $course_type = $this->request->getPost("course_type");
+        $course_type = "soft skill";
 
         if (
             !empty($course) &&
@@ -2882,68 +2876,7 @@ $data['courseArrayUpcoming'] = $courseArrayUpcoming;
             echo 'All fields are required!';
         }
     }
-    // public function submitNewUpdate()
-    // {
-    //     $email  = session()->get('email') ;
-    //     if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
-        
-        
-    //     $business_stage_type = $this->request->getPost("business_stage_type");
-    //     $Startup_Implementation_Stage = $this->request->getPost("Startup_Implementation_Stage");
-    //     $profile_extra = $this->request->getPost("profile_extra");
-    //     if ($Startup_Implementation_Stage == "DIMP Skill"){
-    //         $profile_extra = "DIMP Skill";
-    //     }
-    //     $info_source = $this->request->getPost("info_source");
-    //     $disability = $this->request->getPost("disability");
-
-    //     if (
-    //         !empty($Primary_Contact_Name) &&
-    //         !empty($Gender) &&
-    //         !empty($dob) &&
-    //         !empty($Phones) &&
-    //         !empty($email) &&
-    //         !empty($state_of_origin) &&
-    //         !empty($lga_of_origin) &&
-    //         !empty($State) &&
-    //         !empty($lga_of_residence) &&
-    //         !empty($city) &&
-    //         !empty($Personal_Address) &&
-    //         !empty($business_stage_type) &&
-    //         !empty($Startup_Implementation_Stage) &&
-    //         !empty($profile_extra) &&
-    //         !empty($info_source) &&
-    //         !empty($disability)
-    //     ) {
-   
-    //         $data1 = array(
-    //                 'Primary_Contact_Name' => $Primary_Contact_Name,
-    //                 'Phones' => $Phones,
-    //                 'Startup_Implementation_Stage' => $Startup_Implementation_Stage,
-    //                 'Gender' => $Gender,
-    //                 'State' => $State,
-    //                 'Personal_Address' => $Personal_Address,
-    //              );
-
-    //         $data2 = array(
-    //             'middlename' => $middlename,
-    //             'dob' => $dob,
-    //             'state_of_origin' => $state_of_origin,
-    //             'lga_of_origin' => $lga_of_origin,
-    //             'city' => $city,
-    //             'disability' => $disability,
-    //             'profile_extra' => $profile_extra,
-    //             'info_source' => $info_source,
-    //             'business_stage_type' => $business_stage_type,
-    //             'lga_of_residence' => $lga_of_residence,
-    //         );
-
-    //         $this->gfa_model->saveStartupProfile($email, $data1);
-    //         $this->gfa_model->updateCategory($email, $data2);
-    //     } else {
-    //         echo 'All fields are required!';
-    //     }
-    // }
+    
 
     public function updateCategory()
     {
@@ -3472,7 +3405,6 @@ public function profileup()
 
         // Category → Courses Mapping
         $categoryCourses = [
-
             'PERSONAL EFFECTIVENESS & SELF-LEADERSHIP' => [
                 'Emotional Intelligence',
                 'Time Management',
@@ -3557,7 +3489,6 @@ public function profileup()
 
 
     public function login()
-
     {
         
         return redirect()->to("https://katsina.remsana.com/");
