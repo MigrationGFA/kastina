@@ -854,7 +854,7 @@ public function GetUsersHaveStartedLearningCourses($email) {
    }
 public function  GetCompletedSoftLessons($userEmail,$course){
 
-$query = $this->db->query("CALL GetCompletedLessons(?,?)", [$userEmail,$course]);
+$query = $this->db->query("CALL GetCompletedSoftLessons(?,?)", [$userEmail,$course]);
 
 // Check if the query was successful
 if ($query) {
@@ -872,7 +872,7 @@ if ($query) {
 
 public function  GetPendingSoftLessons($userEmail,$course){
 
-$query = $this->db->query("CALL GetPendingLessons(?,?)", [$userEmail,$course]);
+$query = $this->db->query("CALL GetPendingSoftLessons(?,?)", [$userEmail,$course]);
 
 // Check if the query was successful
 if ($query) {
@@ -890,7 +890,7 @@ if ($query) {
 
 public function  GetPassedSoftQuizzes($userEmail,$course){
 
-$query = $this->db->query("CALL GetPassedQuizzes(?,?)", [$userEmail,$course]);
+$query = $this->db->query("CALL GetPassedSoftQuizzes(?,?)", [$userEmail,$course]);
 
 // Check if the query was successful
 if ($query) {
@@ -907,7 +907,7 @@ if ($query) {
 }
 public function  GetUnpassedSoftQuizzes($userEmail,$course){
 
-$query = $this->db->query("CALL GetUnpassedQuizzes(?,?)", [$userEmail,$course]);
+$query = $this->db->query("CALL GetUnpassedSoftQuizzes(?,?)", [$userEmail,$course]);
 
 // Check if the query was successful
 if ($query) {

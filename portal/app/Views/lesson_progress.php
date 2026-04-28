@@ -19,7 +19,6 @@
         <div class="info-container">
             <ul class="ps-3 g-2 my-3">
            <?php $CompletedLessonsData = $this->gfa_model->GetCompletedSoftLessons($email,$course); 
-              var_dump($CompletedLessonsData);
            foreach($CompletedLessonsData as $CompletedLessons){ ?>
           <li class="mb-2"><a href="<?php echo base_url("gfa/lesson/{$CompletedLessons['id']}/{$CompletedLessons['lesson']}"); ?>"><?php echo $CompletedLessons['lesson'] ?></a></li>
          <?php  }  ?>
@@ -38,7 +37,6 @@
         </div>
          <ul class="ps-3 g-2 my-3">
             <?php $PendingLessonsData = $this->gfa_model->GetPendingSoftLessons($email,$course);
-              var_dump($PendingLessonsData);
             foreach($PendingLessonsData as $GetPendingSoftLessons){ ?>
           <li class="mb-2 userActivity" ls="<?= 'l-' . $GetPendingSoftLessons['id'] ?>"><a href="<?php echo base_url("gfa/lesson/{$GetPendingSoftLessons['id']}/{$GetPendingSoftLessons['lessons']}"); ?>"><?php echo $GetPendingSoftLessons['lessons'] ?></a></li>
          <?php  }  ?>
