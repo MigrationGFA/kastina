@@ -25,6 +25,7 @@
 
             <?php 
               $PassedQuizzesData = $this->gfa_model->GetPassedSoftQuizzes($email, $course);
+              var_dump($PassedQuizzesData);
               foreach($PassedQuizzesData as $quiz){ 
             ?>
 
@@ -53,6 +54,7 @@
 
           <?php 
             $UnpassedQuizzesData = $this->gfa_model->GetUnpassedSoftQuizzes($email, $course);
+              var_dump($UnpassedQuizzesData);
             foreach($UnpassedQuizzesData as $quiz){ 
           ?>
 
