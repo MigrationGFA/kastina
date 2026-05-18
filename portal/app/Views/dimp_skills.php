@@ -9,19 +9,19 @@
             
      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0" nonce="<?php echo $nonce_value; ?>"></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0" nonce="<?php // echo $nonce_value; ?>"></script>
 
   <!-- <div class="col-lg-12 mb-4">
     <div class="input-group">
-        <input type="text" class="form-control" value="<?php echo 'https://kaduna-digital.dimpified.com/register/?ref='.$skillArray[0]['ref']; ?>"  readonly="readonly" id="inputField" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <input type="text" class="form-control" value="<?php // echo 'https://kaduna-digital.dimpified.com/register/?ref='.$skillArray[0]['ref']; ?>"  readonly="readonly" id="inputField" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2">
         <div class="input-group-append">
             <button class="btn btn-outline-primary" type="button" id="copyButton">Copy Referral Link</button>
         </div>
     </div>
-    <div id="revenueGenerated" class="mb-2 mt-2"><a class="btn btn-outline-primary" href="whatsapp://send?text=<?php echo 'https://kaduna-digital.dimpified.com/register/?ref='.$skillArray[0]['ref']; ?>" data-action="share/whatsapp/share">Share via WhatsApp</a> 
-   <div class="fb-share-button btn btn-outline-primary" data-href="<?php echo 'https://kaduna-digital.dimpified.com/register/?ref='.$skillArray[0]['ref']; ?>" data-layout="button"></div>
-   <a href="https://twitter.com/intent/tweet?url=<?php echo 'https://kaduna-digital.dimpified.com/register/?ref='.$skillArray[0]['ref']; ?>" class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer">Share on Twitter</a>
-     <a href="<?php echo base_url('gfa/referral'); ?>" class="btn btn-dark">Details</a>
+    <div id="revenueGenerated" class="mb-2 mt-2"><a class="btn btn-outline-primary" href="whatsapp://send?text=<?php // echo 'https://kaduna-digital.dimpified.com/register/?ref='.$skillArray[0]['ref']; ?>" data-action="share/whatsapp/share">Share via WhatsApp</a> 
+   <div class="fb-share-button btn btn-outline-primary" data-href="<?php // echo 'https://kaduna-digital.dimpified.com/register/?ref='.$skillArray[0]['ref']; ?>" data-layout="button"></div>
+   <a href="https://twitter.com/intent/tweet?url=<?php // echo 'https://kaduna-digital.dimpified.com/register/?ref='.$skillArray[0]['ref']; ?>" class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer">Share on Twitter</a>
+     <a href="<?php // echo base_url('gfa/referral'); ?>" class="btn btn-dark">Details</a>
 	</div>
   </div>        -->
 
@@ -59,9 +59,9 @@
 </div>     
 
   <div class="card mb-4">
-    <div class="alert alert-danger" role="alert">
+    <!-- <div class="alert alert-danger" role="alert">
       Note that you have <strong>30 days</strong> to complete your chosen course and download your certificate.
-    </div>
+    </div> -->
     <div class="card-header d-flex flex-wrap justify-content-between gap-3">
       <div class="card-title mb-0 me-1">
         <!-- <h5 class="mb-1">DIMP Skill</h5> -->
@@ -87,10 +87,7 @@
     </div>
     <div class="card-body">
     <div class="row mb-4 g-4 loadDimpAnalytics"> </div>
-      <div class="row gy-4 mb-4"><?php 
-      
-
-      ?>
+      <div class="row gy-4 mb-4">
            <?php if(!empty($courseArrayToday)){   ?>
            
     <?php $n =1;  foreach ($courseArrayToday as $courseDetailsToday) { ?>
@@ -174,7 +171,8 @@
        <?php } } ?>
         <br>
         <?php if(!empty($courseArrayPrev)){  ?>
-		<a class="h5" href="#">You are to complete the courses below</a>
+		<a class="h5" href="#">Explore more business courses below</a>
+		<!-- <a class="h5" href="#">You are to complete the courses below</a> -->
 		<!-- <a class="h5" href="#">Previous Courses</a> -->
     <?php $n =1;  foreach ($courseArrayPrev as $courseDetailsPrev) {  ?>
 <?php 
