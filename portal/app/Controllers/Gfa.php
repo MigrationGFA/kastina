@@ -1556,7 +1556,7 @@ public function lesson_progress($course="")
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = session()->get('account_type') ;
         
-        $data['course'] = urldecode($course);
+        // $data['course'] = urldecode($course);
         echo view('header-assets-new',$title);
         echo view('menu-assets-new',$data);
         echo view('navbar-assets-new',$data);
@@ -1576,7 +1576,7 @@ public function quiz_progress($course="")
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = session()->get('account_type') ;
         
-        $data['course'] = urldecode($course);
+        // $data['course'] = urldecode($course);
         echo view('header-assets-new',$title);
         echo view('menu-assets-new',$data);
         echo view('navbar-assets-new',$data);
@@ -1586,9 +1586,7 @@ public function quiz_progress($course="")
     }
 
     public function lesson_progres($course="")
-
     {
-        
         $email  = session()->get('email') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
         $title['page_title'] = "Lesson Progress smedan";
@@ -1596,7 +1594,7 @@ public function quiz_progress($course="")
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = session()->get('account_type') ;
         
-        // $data['course'] = urldecode($course);
+        $data['course'] = urldecode($course);
         echo view('header-assets-new',$title);
         echo view('menu-assets-new',$data);
         echo view('navbar-assets-new',$data);
@@ -1604,10 +1602,8 @@ public function quiz_progress($course="")
         echo view('footer-assets-new',$data); 
 
     }
-public function quiz_progres($course="")
-
-    {
-        
+    public function quiz_progres($course="")
+    { 
         $email  = session()->get('email') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
         $title['page_title'] = "Quiz Progress smedan";
@@ -1615,29 +1611,20 @@ public function quiz_progres($course="")
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = session()->get('account_type') ;
         
-        // $data['course'] = urldecode($course);
+        $data['course'] = urldecode($course);
         echo view('header-assets-new',$title);
         echo view('menu-assets-new',$data);
         echo view('navbar-assets-new',$data);
         echo view('quiz_progres', $data);
         echo view('footer-assets-new',$data); 
-
     }
 
-public function edit_lessonpostpro_ext(){
+    public function edit_lessonpostpro_ext(){
     $textData  =  $this->request->getPost("textData");
     $ref_id = $this->gfa_model->mysqlCheck($this->request->getPost("ref_id"));
-    $data_story = array(
+    $data_story = array('data' => $textData,);
                     
-                    'data' => $textData,
-                   
-                    
-                    
-                    
-                
-                    );
-                    
-                    $this->gfa_model->updateDataExt($data_story, $ref_id); 
+    $this->gfa_model->updateDataExt($data_story, $ref_id); 
     
 }
 
