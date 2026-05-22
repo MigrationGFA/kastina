@@ -21,7 +21,7 @@ $cohort = $this->gfa_model->getCohortDetails($email);
   
   <div class="app-brand demo ">
       <a href="gfa/" class="app-brand-link">      
-     <img src='<?=base_url('public/assets/images/smedan_logo.png')?>' style='width: 100%; height: 65px;'>
+     <img src='<?=base_url('public/assets/images/katsina_logo.png')?>' style='width: 100%; height: 65px;'>
     </a>
   </div>
 
