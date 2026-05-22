@@ -91,42 +91,48 @@ class GfaModel extends Model
 
 
     public function ExportWemaEkitiCompletedCoursePassedQuiz($program_type){
+        $query = $this->db->query("CALL ExportWemaEkitiCompletedCoursePassedQuiz(?)", [$program_type]);
+        return $query->getResultArray(); 
+    }
 
-    $query = $this->db->query("CALL ExportWemaEkitiSoftCompletedCoursePassedQuiz(?)", [$program_type]);
-    // $query = $this->db->query("CALL ExportWemaEkitiCompletedCoursePassedQuiz(?)", [$program_type]);
-   
-   return $query->getResultArray(); 
-   }
+    public function ExportWemaEkitiSoftCompletedCoursePassedQuiz($program_type){
+        $query = $this->db->query("CALL ExportWemaEkitiSoftCompletedCoursePassedQuiz(?)", [$program_type]);
+        return $query->getResultArray(); 
+    }
+
    public function ExportWemaEkitiCompletedAtLeastACourse($program_type) {
+    $query = $this->db->query("CALL ExportWemaEkitiCompletedAtLeastACourse(?)", [$program_type]);
+    return $query->getResultArray(); 
+   }
 
+   public function ExportWemaEkitiSoftCompletedAtLeastACourse($program_type) {
     $query = $this->db->query("CALL ExportWemaEkitiSoftCompletedAtLeastACourse(?)", [$program_type]);
-    // $query = $this->db->query("CALL ExportWemaEkitiCompletedAtLeastACourse(?)", [$program_type]);
-   
-   return $query->getResultArray(); 
-   
+    return $query->getResultArray(); 
    }
+
    public function ExportWemaEkitiStartedLearning($program_type) {
-
-       $query = $this->db->query("CALL ExportWemaEkitiSoftStartedLearning(?)", [$program_type]);
-    //    $query = $this->db->query("CALL ExportWemaEkitiStartedLearning(?)", [$program_type]);
-   return $query->getResultArray(); 
-   
+    $query = $this->db->query("CALL ExportWemaEkitiStartedLearning(?)", [$program_type]);
+    return $query->getResultArray(); 
    }
+
+   public function ExportWemaEkitiSoftStartedLearning($program_type) {
+    $query = $this->db->query("CALL ExportWemaEkitiSoftStartedLearning(?)", [$program_type]);
+    return $query->getResultArray(); 
+   }
+
    public function ExportWemaEkitiLoggedIn($program_type) {
-
-    $query = $this->db->query("CALL ExportWemaEkitiSoftLoggedIn(?)", [$program_type]);
-    // $query = $this->db->query("CALL ExportWemaEkitiLoggedIn(?)", [$program_type]);
-   
-   return $query->getResultArray(); 
-   
+    $query = $this->db->query("CALL ExportWemaEkitiLoggedIn(?)", [$program_type]);
+    return $query->getResultArray(); 
    }
 
-    public function WemaEkitiAnalytics($program_type) {
+   public function ExportWemaEkitiSoftLoggedIn($program_type) {
+    $query = $this->db->query("CALL ExportWemaEkitiSoftLoggedIn(?)", [$program_type]);
+    return $query->getResultArray(); 
+   }
 
+   public function WemaEkitiAnalytics($program_type) {
     $query = $this->db->query("CALL WemaEkitiAnalytics(?)", [$program_type]);
-   
-   return $query->getResultArray(); 
-   
+    return $query->getResultArray(); 
    }
 
     public function regAllBatch()
@@ -227,8 +233,7 @@ class GfaModel extends Model
     }
     public function  CheckCompletionAllCoursesWema($userEmail){
 
-    $query = $this->db->query("CALL CheckCompletionSoftAllCoursesWema(?)", [$userEmail]);
-    // $query = $this->db->query("CALL CheckCompletionAllCoursesWema(?)", [$userEmail]);
+    $query = $this->db->query("CALL CheckCompletionAllCoursesWema(?)", [$userEmail]);
 
     // Check if the query was successful
     if ($query) {
@@ -243,6 +248,25 @@ class GfaModel extends Model
     }
 
     }
+
+    public function  CheckCompletionSoftAllCoursesWema($userEmail){
+
+    $query = $this->db->query("CALL CheckCompletionSoftAllCoursesWema(?)", [$userEmail]);
+
+    // Check if the query was successful
+    if ($query) {
+        // Retrieve the result set
+        $result = $query->getResultArray();
+        // Free the result set
+        $query->freeResult();
+        return $result;
+    } else {
+        // Handle the error
+        return null;
+    }
+
+    }
+
     public function  GetUserLatestQuizScoresWema($userEmail){
 
         $query = $this->db->query("CALL GetUserLatestQuizScoresWema(?)", [$userEmail]);
