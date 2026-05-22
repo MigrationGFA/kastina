@@ -1589,7 +1589,7 @@ public function quiz_progress($course="")
     {
         $email  = session()->get('email') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
-        $title['page_title'] = "Lesson Progress smedan";
+        $title['page_title'] = "Lesson Progress Katsina";
         $data['email'] =  $email;
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = session()->get('account_type') ;
@@ -1606,7 +1606,7 @@ public function quiz_progress($course="")
     { 
         $email  = session()->get('email') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
-        $title['page_title'] = "Quiz Progress smedan";
+        $title['page_title'] = "Quiz Progress Katsina";
         $data['email'] =  $email;
         $data['login_type'] = session()->get('login_type') ;
         $data['account_type'] = session()->get('account_type') ;
@@ -2645,7 +2645,7 @@ public function group_members_api()
     {
         $email  = session()->get('email') ;
         if(($email == '')){ return redirect()->to(base_url('gfa/login')); }
-        $title['page_title'] = "smedan Learning Skills";
+        $title['page_title'] = "Katsina Learning Skills";
         $data['email'] =  $email;
         
     	$chosenCourse = $this->gfa_model->GetRegisteredWemaCourse($email);
