@@ -6238,7 +6238,7 @@ $data_connection = array(
             //     delete_cookie('last_name');
             //     return redirect()->to('https://katsina.remsana.com');
             // }
-        // }
+        // } 
 
         
         // 2. Access valid — now set session and cookie
