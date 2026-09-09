@@ -121,7 +121,7 @@ if ($position !== false) {
             if (is_array($getActiveQuizData) && count($getActiveQuizData) == 1) {
         			// foreach($getActiveQuizData as $getActiveQuiz){     
             ?>
-            <a href="<?php echo base_url("gfa/quiz/{$getActiveQuizData[0]['ref_id']}") ?>" ls="<?= 'q-' . $getActiveQuizData[0]['ref_id'];  ?>" class="btn rounded-pill btn-danger userActivity">Next</a>
+            <!-- <a href="<?php // echo base_url("gfa/quiz/{$getActiveQuizData[0]['ref_id']}") ?>" ls="<?//= 'q-' . $getActiveQuizData[0]['ref_id'];  ?>" class="btn rounded-pill btn-danger userActivity">Next</a> -->
           <?php } ?>
           </div>
           <hr class="my-4">
