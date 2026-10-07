@@ -80,10 +80,10 @@
 															//?>
             </div>
           </div>
-      <div class="transaction-item">
+      <!-- <div class="transaction-item">
             <div class="d-flex">
                  <div class="avatar bg-light-warning rounded float-start">
-              <a href="<?php echo base_url("gfa/completed_assigned_course") ?>" class="btn btn-warning w-100">Details</a>
+              <a href="<?// php echo base_url("gfa/completed_assigned_course") ?>" class="btn btn-warning w-100">Details</a>
               </div>
             
               <div class="transaction-percentage">
@@ -93,8 +93,8 @@
 				</small>
               </div>
             </div>
-                 <div class="fw-bolder text-success"><?php echo $sql[0]['CompletedCourseAndPassedQuiz'];  //$completedCourse ?></div>
-          </div>
+                 <div class="fw-bolder text-success"><?// php echo $sql[0]['CompletedCourseAndPassedQuiz'];  //$completedCourse ?></div>
+          </div> -->
           
 		  <div class="transaction-item"> 
             <div class="d-flex">
