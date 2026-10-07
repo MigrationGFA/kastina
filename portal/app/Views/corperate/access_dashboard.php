@@ -48,6 +48,7 @@
                   <th>Last Name</th>
                   
                    <th>First Name</th>
+                   <th>Email</th>
                    <th>Course</th>
                    <th>Date</th>
                   
@@ -96,6 +97,17 @@
                     </div>
                    </td>
 
+                   <td>
+                   <div class="d-flex align-items-center">
+                      <div class="avatar bg-light-primary me-1">
+                        <div class="avatar-content">
+                          <i data-feather="edit" class="font-medium-3"></i>
+                        </div>
+                      </div>
+                      <span><?php echo $rowArray['email'] ?>
+                          </span>
+                    </div>
+                   </td>
                    <td>
                    <div class="d-flex align-items-center">
                       <div class="avatar bg-light-primary me-1">
