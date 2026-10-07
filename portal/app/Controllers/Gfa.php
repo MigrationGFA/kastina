@@ -7155,6 +7155,7 @@ public function export_access_dashboard()
                 $csvHeader = array(
                     "S/No",
                     "Name",
+                    "Email",
                     "Course",
                     "Date"
                     
@@ -7172,6 +7173,7 @@ public function export_access_dashboard()
                             $csvRow = array(
                                 $n++,
                                 $row['last_name']." ".$row['first_name'],
+                                $row['email'],
                                 $row['course'],
                                 $row['LastTimeAccessed']
                                 
@@ -7212,6 +7214,7 @@ public function export_started_learnining()
                 $csvHeader = array(
                     "S/No",
                     "Name",
+                    "Email",
                     "Course",
                     "Progress",
                     "Passed Quiz",
@@ -7231,6 +7234,7 @@ public function export_started_learnining()
                             $csvRow = array(
                                 $n++,
                                 $row['last_name']." ".$row['first_name'],
+                                $row['email'],
                                 $row['ongoing_course'],
                                 $row['RecentCourseProgress'],
                                 $row['passed_quizzes'],
@@ -7272,6 +7276,7 @@ public function export_completed_at_least_a_course()
                 $csvHeader = array(
                      "S/No",
                     "Name",
+                    "Email",
                     "Course",
                     "Progress",
                     "Passed Quiz",
@@ -7291,6 +7296,7 @@ public function export_completed_at_least_a_course()
                             $csvRow = array(
                                 $n++,
                                 $row['last_name']." ".$row['first_name'],
+                                $row['email'],
                                 $row['ongoing_course'],
                                 $row['RecentCourseProgress'],
                                 $row['passed_quizzes'],
@@ -7332,6 +7338,7 @@ public function export_completed_assigned_course()
                 $csvHeader = array(
                      "S/No",
                     "Name",
+                    "Email",
                     "Course",
                     "Progress",
                     "Passed Quiz",
@@ -7351,6 +7358,7 @@ public function export_completed_assigned_course()
                             $csvRow = array(
                                 $n++,
                                 $row['last_name']." ".$row['first_name'],
+                                $row['email'],
                                 $row['ongoing_course'],
                                 $row['RecentCourseProgress'],
                                 $row['passed_quizzes'],
